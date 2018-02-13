@@ -1,6 +1,6 @@
-#include "parse.h"
-#include "utility.h"
-#include "shell.h"
+#include "MyParse.h"
+#include "MyFunctions.h"
+#include "MyShell.h"
 #include<stdio.h>
 
 int main()
