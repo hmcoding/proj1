@@ -270,7 +270,7 @@ char** externPipe(char** argv, int numpipe, int back)
 		{
 			close(3);
 			close(4);
-			if (background != -1)
+			if (back != -1)
 			{
 				waitpid(c2PID, &status, WNOHANG);
 				waitpid(c1PID, &status, WNOHANG);
