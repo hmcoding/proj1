@@ -171,8 +171,7 @@ char** getPaths(char** args)
 			}
 		}
 		
-		// cd
-		//if (whatCmd == 2)
+	
 		switch(whatCmd)
 		{
 			case 2:		
@@ -184,20 +183,31 @@ char** getPaths(char** args)
 			  {
 				if (!CharCheck(args[itrArg], '/'))
 				{
-					if (!CharCheck(args[itrArg], '~') && !CharCheck(args[itrArg], '.'))
+					//if (!CharCheck(args[itrArg], '~') && !CharCheck(args[itrArg], '.'))
+					if (!CharCheck(args[itrArg], '~')
 					{
+						if (!CharCheck(args[itrArg], '.'))
+						{
 						args[itrArg] = FPushString(args[itrArg], '/');
 						args[itrArg] = FPushString(args[itrArg], '.');
+						}
 					}
 				}
 				else
 				{
-					if (args[itrArg][0] != '/' &&
+					/*if (args[itrArg][0] != '/' &&
 						args[itrArg][0] != '.' &&
-						args[itrArg][0] != '~')
+						args[itrArg][0] != '~')*/
+					if (args[itrArg][0] != '/')
 					{
-						args[itrArg] = FPushString(args[itrArg], '/');
-						args[itrArg] = FPushString(args[itrArg], '.');
+						if(args[itrArg][0] != '.')
+						{
+							if(args[itrArg][0] != '~')
+							{	
+							args[itrArg] = FPushString(args[itrArg], '/');
+							args[itrArg] = FPushString(args[itrArg], '.');
+							}
+						}
 					}
 				}
 				args[itrArg] = PathMaker(args[itrArg]);
