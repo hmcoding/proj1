@@ -166,18 +166,7 @@ int CmdCheck(char** args, int a)
 {
 	static char* cmdsInclude[5] = {"exit", "echo", "etime", "limits", NULL}; 
 	int equal = strcmp(args[a], "cd");
-	/*
-	if ((strcmp(args[a], "cd") != 0))
-	{
-		
-		if (CmdVal(args[a]))
-			return 1;
-	}
 	
-	
-	else if (strcmp(args[a], "cd") == 0)
-		return 2;
-		*/
 	
 	switch(equal)
 	{
@@ -408,11 +397,22 @@ char* CharRep(char* x, size_t start, size_t end, const char* y)
 	int xObj = 0;
 	int yObj = 0;
 	int doneObj = 0;
-
+/*
 	if (start == 0)
 		doneObj = end + 1;
 	else
 		doneObj = end + 1;
+*/
+	switch(start)
+	{
+		case 0:
+			doneObj = end + 1;
+			break;
+		default:
+			doneObj = end + 1;
+			break;
+	}
+			
 
 	for (stringAnsObj = 0; stringAnsObj < lengthNew; stringAnsObj++)
 	{
