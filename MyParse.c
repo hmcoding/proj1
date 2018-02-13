@@ -20,11 +20,6 @@ char** parseIn(char* inp)
 	inp = whiteParse(inp);
 	
 	char** inpArgs = argsParse(inp);
-	/*
-	if (inpArgs[0] != NULL && (strcmp(inpArgs[0], "&") == 0))
-	{
-		inpArgs = RemoveArr(inpArgs, 0);
-	}*/
 	
 	if (inpArgs[0] != NULL)
 	{
@@ -74,10 +69,14 @@ char* whiteParse(char* line)
 			if (theChar == '\0')
 				hasit = 1;
 		}
-		if (hasit == 1 && numWspace > 0)
+		//if (hasit == 1 && numWspace > 0)
+		if (hasit == 1)
 		{
+			if(numWspace > 0)
+			{
 			line = DelFunc(line, obj-numWspace-1, obj-2);
 			break;
+			}
 		}
 		else if (numWspace > 1)
 		{
