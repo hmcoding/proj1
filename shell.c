@@ -63,7 +63,6 @@ void RunShell()
 		}
 		else if (strcmp(argv[0], "etime") == 0)
 		{
-			printf("HHHH\n");
 			if (GetSize(argv) > 1)
 			{
 				argv = RemoveArr(argv, 0);
