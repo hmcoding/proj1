@@ -97,12 +97,12 @@ void remPro(int index)
 
 struct beginPro* newPro(int pid_1, int pid_2, char* cmd)
 {
-	struct beginPro* ret = (struct beginPro*)calloc(1, sizeof(struct beginPro));
-	ret->pid_1 = pid_1;
-	ret->pid_2 = pid_2;
-	ret->cmd = (char*)calloc(strlen(cmd)+1,sizeof(char));
-	strcpy(ret->cmd, cmd);
-	return ret;
+	struct beginPro* ans = (struct beginPro*)calloc(1, sizeof(struct beginPro));
+	ans->pid_1 = pid_1;
+	ans->pid_2 = pid_2;
+	ans->cmd = (char*)calloc(strlen(cmd)+1,sizeof(char));
+	strcpy(ans->cmd, cmd);
+	return ans;
 }
 
 void spacePro(struct beginPro* p)
@@ -114,12 +114,12 @@ void spacePro(struct beginPro* p)
 int checkPro(struct beginPro* p)
 {
 	int status;
-	int waitpid_ret;
+	int waitpidAns;
 	if (p->pid_2 != -1)
 	{
-		waitpid_ret = waitpid(p->pid_2, &status, WNOHANG);
+		waitpidAns = waitpid(p->pid_2, &status, WNOHANG);
 		
-		switch(waitpid_ret){
+		switch(waitpidAns){
 		  case 0:
 			return 0;
 			break;
@@ -130,9 +130,9 @@ int checkPro(struct beginPro* p)
 		}
 
 	}
-	waitpid_ret = waitpid(p->pid_1, &status, WNOHANG);
+	waitpidAns = waitpid(p->pid_1, &status, WNOHANG);
 
-	switch(waitpid_ret){
+	switch(waitpidAns){
 	  case 0:
 	  	return 0;
 		break;
