@@ -177,14 +177,14 @@ int CmdCheck(char** args, int a)
 	
 	while (temp != NULL)
 	{
-		printf("h\n");
-		if (strcmp(args[obj], temp) == 0)
+		
+		if (strcmp(args[a], temp) == 0)
 		{
-			printf("H\n");
+			
 			return 3;
 		}
 		temp = cmdsInclude[++obj];
-		printf("Hi\n");
+		
 	}
 	
 	return 0;
