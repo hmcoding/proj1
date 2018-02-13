@@ -166,7 +166,7 @@ int CmdCheck(char** args, int a)
 {
 	static char* cmdsInclude[5] = {"exit", "echo", "etime", "limits", NULL}; 
 	int equal = strcmp(args[a], "cd");
-	
+	/*
 	if ((strcmp(args[a], "cd") != 0))
 	{
 		
@@ -177,6 +177,19 @@ int CmdCheck(char** args, int a)
 	
 	else if (strcmp(args[a], "cd") == 0)
 		return 2;
+		*/
+	
+	switch(equal)
+	{
+		case 0:
+			return 2;
+			break;
+		default:
+			if (CmdVal(args[a]))
+				return 1;
+			break;
+	}
+			
 
 	size_t obj = 0;
 	char* temp = cmdsInclude[obj];
