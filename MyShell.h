@@ -9,8 +9,8 @@
 #include<fcntl.h>
 #include<sys/time.h>
 #include <errno.h>
-#include "utility.h"
-#include "parse.h"
+#include "MyFunctions.h"
+#include "MyParse.h"
 #include "MyProcesses.h"
 
 
