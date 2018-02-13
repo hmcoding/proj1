@@ -254,35 +254,35 @@ char** externPipe(char** argv, int numpipe, int back)
             }
 		
 		int now;
-	int p1_to_p2[2];
-	pipe(p1_to_p2);
+	int changeP1P2[2];
+	pipe(changeP1P2);
 	
 	
-	pid_t c1PID = fork();
+	pid_t child1 = fork();
 	
 	
-	if (c1PID > 0)
+	if (child1 > 0)
 	{
-		pid_t c2PID = fork();
+		pid_t child2 = fork();
 		
-		if (c2PID > 0)
+		if (child2 > 0)
 		{
 			close(3);
 			close(4);
 			if (back != -1)
 			{
-				waitpid(c2PID, &now, WNOHANG);
-				waitpid(c1PID, &now, WNOHANG);
-				handleQueue(newPro(c1PID, c2PID, cmd));
+				waitpid(child2, &now, WNOHANG);
+				waitpid(child1, &now, WNOHANG);
+				handleQueue(newPro(child1, child2, cmd));
 			}
 			else
 			{
-				waitpid(c2PID, &now, 0);
-				waitpid(c1PID, &now, 0);
+				waitpid(child2, &now, 0);
+				waitpid(child1, &now, 0);
 			}
 		}
 		
-		else if(c2PID == 0)
+		else if(child2 == 0)
 		{
 			close(0);
 			dup(3);
@@ -301,7 +301,7 @@ char** externPipe(char** argv, int numpipe, int back)
 		
 	}
 	
-	else if (c1PID == 0)
+	else if (child1 == 0)
 	{
 		
 		close(1);
@@ -348,36 +348,36 @@ char** externPipe(char** argv, int numpipe, int back)
             
 		
 		int now;
-	int p1_to_p2[2];
-	int p2_to_p3[2];
+	int changeP1P2[2];
+	int changeP2P3[2];
 	
-	pipe(p1_to_p2);
-	pipe(p2_to_p3);
+	pipe(changeP1P2);
+	pipe(changeP2P3);
 	
-	pid_t c1PID = fork();
+	pid_t child1 = fork();
 	
 	
-	if (c1PID > 0)
+	if (child1 > 0)
 	{
-		pid_t c2PID = fork();
+		pid_t child2 = fork();
 		
-		if (c2PID > 0)
+		if (child2 > 0)
 		{
-			pid_t c3PID = fork();
+			pid_t child3 = fork();
 			
-			if (c3PID > 0)
+			if (child3 > 0)
 			{
 				close(3);
 				close(4);
 				close(5);
 				close(6);
 				
-				waitpid(c3PID, &now, 0);
-				waitpid(c2PID, &now, 0);
-				waitpid(c1PID, &now, 0);
+				waitpid(child3, &now, 0);
+				waitpid(child2, &now, 0);
+				waitpid(child1, &now, 0);
 			}
 			
-			else if (c3PID == 0)
+			else if (child3 == 0)
 			{
 				close(0);
 				dup(5);
@@ -398,7 +398,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			}
 		}
 		
-		else if (c2PID == 0)
+		else if (child2 == 0)
 		{
 			close(0);
 			dup(3);
@@ -421,7 +421,7 @@ char** externPipe(char** argv, int numpipe, int back)
 		}
 	}
 	
-	else if (c1PID == 0)
+	else if (child1 == 0)
 	{
 		close(1);
 		dup(4);
@@ -471,33 +471,33 @@ char** externPipe(char** argv, int numpipe, int back)
           
 		
 		int now;
-	int p1_to_p2[2];
-	int p2_to_p3[2];
-	int p3_to_p4[2];
+	int changeP1P2[2];
+	int changeP2P3[2];
+	int changeP3P4[2];
 	
-	pipe(p1_to_p2);
-	pipe(p2_to_p3);
-	pipe(p3_to_p4);
+	pipe(changeP1P2);
+	pipe(changeP2P3);
+	pipe(changeP3P4);
 	
-	pid_t c1PID = fork();
+	pid_t child1 = fork();
 	
 	
-	if (c1PID > 0)
+	if (child1 > 0)
 	{
-		pid_t c2PID = fork();
+		pid_t child2 = fork();
 		
 		
-		if (c2PID > 0)
+		if (child2 > 0)
 		{
-			pid_t c3PID = fork();
+			pid_t child3 = fork();
 			
 			
-			if (c3PID > 0)
+			if (child3 > 0)
 			{
-				pid_t c4PID = fork();
+				pid_t child4 = fork();
 				
 				
-				if (c4PID > 0)
+				if (child4 > 0)
 				{
 					close(3);
 					close(4);
@@ -506,13 +506,13 @@ char** externPipe(char** argv, int numpipe, int back)
 					close(7);
 					close(8);
 					
-					waitpid(c4PID, &now, 0);
-					waitpid(c3PID, &now, 0);
-					waitpid(c2PID, &now, 0);
-					waitpid(c1PID, &now, 0);
+					waitpid(child4, &now, 0);
+					waitpid(child3, &now, 0);
+					waitpid(child2, &now, 0);
+					waitpid(child1, &now, 0);
 				}
 				
-				else if (c4PID == 0)
+				else if (child4 == 0)
 				{
 					close(0);
 					dup(7);
@@ -535,7 +535,7 @@ char** externPipe(char** argv, int numpipe, int back)
 				}
 			}
 			
-			else if (c3PID == 0)
+			else if (child3 == 0)
 			{
 				close(0);
 				dup(5);
@@ -560,7 +560,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			}
 		}
 		
-		else if (c2PID == 0)
+		else if (child2 == 0)
 		{
 			close(0);
 			dup(3);
@@ -585,7 +585,7 @@ char** externPipe(char** argv, int numpipe, int back)
 		}
 	}
 	
-	else if (c1PID == 0)
+	else if (child1 == 0)
 	{
 		close(1);
 		dup(4);
