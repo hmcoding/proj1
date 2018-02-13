@@ -180,7 +180,7 @@ int CmdCheck(char** args, int a)
 		printf("h\n");
 		if (strcmp(args[obj], temp) == 0)
 		{
-			printf("Hi\n");
+			printf("H\n");
 			return 3;
 		}
 		temp = cmdsInclude[++obj];
