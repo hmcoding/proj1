@@ -290,12 +290,12 @@ char** externPipe(char** argv, int numpipe, int back)
 			close(4);
 			execvp(argv2[0], argv2);
 			
-			printf("Error executing in fork in OnePipe: \n");
+			printf("Fork failed for one pipe: \n");
 			DisplayArgs(argv2);
 		}
 		else
 		{
-			printf("Error executing in fork in OnePipe: \n");
+			printf("Fork failed for one pipe: \n");
 			DisplayArgs(argv2);
 		}
 		
@@ -310,12 +310,12 @@ char** externPipe(char** argv, int numpipe, int back)
 		close(4);
 		execvp(argv1[0], argv1);
 		
-		printf("Error executing in fork in OnePipe: \n");
+		printf("Fork failed for one pipe: \n");
 		DisplayArgs(argv1);
 	}
 	else
 	{
-		printf("Error in fork1 of OnePipe()\n");
+		printf("Fork failed for one pipe\n");
 	}
            
 		
@@ -388,12 +388,12 @@ char** externPipe(char** argv, int numpipe, int back)
 				
 				execvp(argv3[0], argv3);
 				
-				printf("Error executing in fork of TwoPipe: \n");
+				printf("Fork failed for two pipes: \n");
 				DisplayArgs(argv3);
 			}
 			else
 			{
-				printf("Error executing in fork in TwoPipe: \n");
+				printf("Fork failed for two pipes: \n");
 				DisplayArgs(argv3);
 			}
 		}
@@ -411,12 +411,12 @@ char** externPipe(char** argv, int numpipe, int back)
 			
 			execvp(argv2[0], argv2);
 			
-			printf("Error executing in fork of TwoPipe: \n");
+			printf("Fork failed for two pipes: \n");
 			DisplayArgs(argv2);
 		}
 		else
 		{
-			printf("Error executing in fork in TwoPipe: \n");
+			printf("Fork failed for two pipese: \n");
 			DisplayArgs(argv2);
 		}
 	}
@@ -432,12 +432,12 @@ char** externPipe(char** argv, int numpipe, int back)
 		
 		execvp(argv1[0], argv1);
 		
-		printf("Error executing in fork of TwoPipe: \n");
+		printf("Fork failed for two pipes: \n");
 		DisplayArgs(argv1);
 	}
 	else
 	{
-		printf("Error executing in fork in TwoPipe: \n");
+		printf("Fork failed for two pipes: \n");
 		DisplayArgs(argv1);
 	}
 		
@@ -525,12 +525,12 @@ char** externPipe(char** argv, int numpipe, int back)
 					
 					execvp(argv4[0], argv4);
 					
-					printf("Error executing in fork of ThreePipe: \n");
+					printf("Fork failed for three pipes: \n");
 					DisplayArgs(argv4);
 				}
 				else
 				{
-					printf("Error executing in fork in ThreePipe: \n");
+					printf("Fork failed for three pipes: \n");
 					DisplayArgs(argv4);
 				}
 			}
@@ -550,12 +550,12 @@ char** externPipe(char** argv, int numpipe, int back)
 				
 				execvp(argv3[0], argv3);
 				
-				printf("Error executing in fork of ThreePipe: \n");
+				printf("Fork failed for three pipes: \n");
 				DisplayArgs(argv3);
 			}
 			else
 			{
-				printf("Error executing in fork in ThreePipe: \n");
+				printf("Fork failed for three pipes: \n");
 				DisplayArgs(argv3);
 			}
 		}
@@ -575,12 +575,12 @@ char** externPipe(char** argv, int numpipe, int back)
 			
 			execvp(argv2[0], argv2);
 			
-			printf("Error executing in fork of ThreePipe: \n");
+			printf("Fork failed for three pipes: \n");
 			DisplayArgs(argv2);
 		}
 		else
 		{
-			printf("Error executing in fork in ThreePipe: \n");
+			printf("Fork failed for three pipes: \n");
 			DisplayArgs(argv2);
 		}
 	}
@@ -598,12 +598,12 @@ char** externPipe(char** argv, int numpipe, int back)
 		
 		execvp(argv1[0], argv1);
 		
-		printf("Error executing in fork of ThreePipe: \n");
+		printf("Fork failed for three pipes: \n");
 		DisplayArgs(argv1);
 	}
 	else
 	{
-		printf("Error executing in fork in ThreePipe: \n");
+		printf("Fork failed for three pipes: \n");
 		DisplayArgs(argv1);
 	}
 		
