@@ -108,7 +108,7 @@ void dirChange(const char* dir)
 	}
 	default:
 	{
-		printf("No such directory\n");
+		printf("This directory does not exist\n");
 		break;
 	}
 	}
@@ -119,7 +119,7 @@ void dirChange(const char* dir)
 
 void theExtern(char** argv, int back, char* cmd)
 {
-	int status;
+	int now;
 	pid_t pid = fork();
 	
 	switch(pid){
@@ -144,7 +144,7 @@ void theExtern(char** argv, int back, char* cmd)
 		default:
 		{
 			
-			waitpid(pid, &status, WNOHANG);
+			waitpid(pid, &now, WNOHANG);
 			
 			handleQueue(newPro(pid, -1, cmd));
 			
@@ -154,7 +154,7 @@ void theExtern(char** argv, int back, char* cmd)
 		case -1:
 		{
 			
-			waitpid(pid, &status, 0);
+			waitpid(pid, &now, 0);
 			break;
 		}
 		}
@@ -171,7 +171,6 @@ char** externIn(char** argv, int inp, int back)
 	argv = RemoveArr(argv, inp);
 	argv = RemoveArr(argv, inp);
 				
-	// update background iterator
 	back = StringCheck(argv, "&");
 	char* cmd = Convert(argv);
 	if (back != -1)
@@ -296,15 +295,15 @@ char** externPipe(char** argv, int numpipe, int back)
 
 }
 
-void handleIO(char** argv, int dir, char* filename, int back, char* cmd)
+void handleIO(char** argv, int directory, char* filename, int back, char* cmd)
 {
 	// output redirection
-	switch(dir){
+	switch(directory){
 	case 0:
 	{
-		int status;
-		int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC, 0777);
-		if (fd == -1)
+		int now;
+		int fIO = open(filename, O_CREAT|O_WRONLY|O_TRUNC, 0777);
+		if (fIO == -1)
 		{
 			printf("Cannot open the file filename: %s\n", filename);
 			exit(1);
@@ -315,8 +314,8 @@ void handleIO(char** argv, int dir, char* filename, int back, char* cmd)
 		case 2:
 		{
 			close(1);
-			dup(fd);
-			close(fd);
+			dup(fIO);
+			close(fIO);
 			execv(argv[0], argv);
 			printf("Command invalid\n");
 			exit(1);
@@ -327,17 +326,17 @@ void handleIO(char** argv, int dir, char* filename, int back, char* cmd)
 			switch(back){
 			default:
 			{
-				waitpid(pid, &status, WNOHANG);
+				waitpid(pid, &now, WNOHANG);
 				handleQueue(newPro(pid, -1, cmd));
 				break;
 			}
 			case -1:
 			{
-				waitpid(pid, &status, 0);
+				waitpid(pid, &now, 0);
 				break;
 			}
 			}
-			close(fd);
+			close(fIO);
 			break;
 		}
 		case 0:
@@ -351,9 +350,9 @@ void handleIO(char** argv, int dir, char* filename, int back, char* cmd)
 	}
 	case 1:
 	{
-		int status;
-		int fd = open(filename, O_RDONLY);
-		switch(fd){
+		int now;
+		int fIO = open(filename, O_RDONLY);
+		switch(fIO){
               	  case -1:
 		  {
 			printf("Cannot access file\n");
@@ -367,8 +366,8 @@ void handleIO(char** argv, int dir, char* filename, int back, char* cmd)
 		case 2:
 		{
 			close(0);
-			dup(fd);
-			close(fd);
+			dup(fIO);
+			close(fIO);
 			execv(argv[0], argv);
 
 			printf("Command invalid\n");
@@ -381,17 +380,17 @@ void handleIO(char** argv, int dir, char* filename, int back, char* cmd)
 			switch(back){
 			default:
 			{
-				waitpid(pid, &status, WNOHANG);
+				waitpid(pid, &now, WNOHANG);
 				handleQueue(newPro(pid, -1, cmd));
 				break;
 			}
 			case -1:
 			{
-				waitpid(pid, &status, 0);
+				waitpid(pid, &now, 0);
 				break;
 			}
 			}
-			close(fd);
+			close(fIO);
 			break;
 		}
 		case 0:
@@ -447,10 +446,10 @@ int errorsBackground(char** argv)
 {
 	int inp = StringCheck(argv, "<");
 	int outp = StringCheck(argv, ">");
-	int P_loc = StringCheck(argv, "|");
-	int B_loc = StringCheck(argv, "&");
+	int thepipe = StringCheck(argv, "|");
+	int theback = StringCheck(argv, "&");
 	
-	if (B_loc == -1)
+	if (theback == -1)
 	{
 		return 0;
 	}
@@ -458,7 +457,7 @@ int errorsBackground(char** argv)
 	// if not < > or |, no error
 	if ((inp == -1) &&
 		(outp == -1) &&
-		(P_loc == -1))
+		(thepipe == -1))
 	{
 		return 0;
 	}
@@ -467,7 +466,7 @@ int errorsBackground(char** argv)
 		if (inp != -1)
 		{
 			// & neighbors <
-			if (inp - 1 == B_loc || inp + 1 == B_loc)
+			if (inp - 1 == theback || inp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
@@ -476,16 +475,16 @@ int errorsBackground(char** argv)
 		if (outp != -1)
 		{
 			// & neighbors >
-			if (outp - 1 == B_loc || outp + 1 == B_loc)
+			if (outp - 1 == theback || outp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
 		}
-		if (P_loc != -1)
+		if (thepipe != -1)
 		{
 			// & neighbors |
-			if (P_loc - 1 == B_loc || P_loc + 1 == B_loc)
+			if (thepipe - 1 == theback || thepipe + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
@@ -497,33 +496,33 @@ int errorsBackground(char** argv)
 
 void displayPrompt()
 {
-	const char* directory = "PWD";
-	const char* machine = "MACHINE";
+	const char* workDir = "PWD";
+	const char* mach = "MACHINE";
 	const char* user = "USER";    
-	char *machine_out;
-	char *user_out;
-	char *directory_out;
+	char *printMach;
+	char *printUser;
+	char *printDir;
 				  
-	machine_out = getenv(machine);
-	user_out = getenv(user);
-	directory_out = getenv(directory);			 
+	printMach = getenv(mach);
+	printUser = getenv(user);
+	printDir = getenv(workDir);			 
 
-	printf("%s@%s: %s => ", user_out, machine_out, directory_out);
+	printf("%s@%s: %s => ", printUser, printMach, printDir);
 
 }
 
 
 void ioCmd(char** argv)
 {
-	int childID;
-	int status;
+	int ID;
+	int now;
 
-	int line_count = 0;
+	int numline = 0;
 
-	char file[256] = "/proc/";
-	char PID[256];
-	char location[256] = "/io";
-	char limit_string[256];
+	char proc[256] = "/proc/";
+	char thepid[256];
+	char place[256] = "/io";
+	char ioStr[256];
 
 	pid_t childPID; 
 	childPID = fork();
@@ -539,24 +538,24 @@ void ioCmd(char** argv)
 	}
 	case 1:
 	{
-		waitpid(childPID, &status, 0);
-		childID = getpid();
-		sprintf(PID, "%i", childID);
-		strcat(file, PID);
-		strcat(file, location);
-		FILE* limit_file;
-		limit_file = fopen(file, "r");
+		waitpid(childPID, &now, 0);
+		ID = getpid();
+		sprintf(thepid, "%i", ID);
+		strcat(proc, thepid);
+		strcat(proc, place);
+		FILE* ioFile;
+		ioFile = fopen(proc, "r");
 
-		while(fgets(limit_string, sizeof(limit_string), limit_file))
+		while(fgets(ioStr, sizeof(ioStr), ioFile))
 		{
-			if ((line_count == 3) || (line_count == 7) ||
-			    (line_count == 8) || (line_count == 12))
+			if ((numline == 3) || (numline == 7) ||
+			    (numline == 8) || (numline == 12))
 			    {
-				printf("%s", limit_string);
+				printf("%s", ioStr);
 			    }
-			line_count++;
+			numline++;
 		}
-		fclose(limit_file);
+		fclose(ioFile);
 		break;
 	}
 	case 0:
@@ -568,45 +567,9 @@ void ioCmd(char** argv)
 	}
 }
 
-
-/*
-void ioacct( pid_t child ) {
-
-    char filename[100];
-    char test[100];
-
-    int tempBytes = -1;
-    int readBytes = -1;
-    int writeBytes = -1;
-    pid_t child_finished = -999;            // pid is never going to be this
-
-    sprintf(filename, "/proc/%d/io", (int)child);
-    FILE* proc_file = fopen(filename, "r"); // open the proc file for eading
-
-    while ((child != child_finished)) {
-
-        //read from the file
-        int count = 0;
-        while (fscanf(proc_file, "%s %d", test, &tempBytes) > 0) {
-            if (count == 4) {
-                readBytes = tempBytes;
-            }
-            if (count == 5) {
-                writeBytes = tempBytes;
-            }
-            ++count;
-        }
-        child_finished = waitpid(-1, (int *)NULL, 0);
-    }
-    printf("\nBytes Read: %d\nBytes Written: %d\n", readBytes, writeBytes);
-}
-
-*/
-
-
 void etimeCmd(char** argv)
 {
-	int status;
+	int now;
 	struct timeval timeofday;
 	gettimeofday(&timeofday, NULL);
 	double beginning_time=timeofday.tv_sec+(timeofday.tv_usec/1000000.0);
@@ -623,7 +586,7 @@ void etimeCmd(char** argv)
 		break;
 	  }
 	  case 1:
-		waitpid(childPID, &status, 0);
+		waitpid(childPID, &now, 0);
 		break;
 	  case 0:
 		printf("Fork has failed\n");
@@ -649,11 +612,8 @@ int checkZero(int tocheck)
 void KillZombies() {
 
     pid_t pid;
-
-    // Kill processes as long as we keep finding them
     while ( ( pid = waitpid( -1, 0, WNOHANG ) )  )
         
-        // No zombie processes are found
         if ( pid == -1 || pid == 0 )
             break;
 
