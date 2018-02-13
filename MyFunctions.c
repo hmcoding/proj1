@@ -58,12 +58,7 @@ char* DelFunc(char* line, size_t start, size_t end)
 
 int ExistCheck(const char* filename)
 {
-	/*
-	if (access(filename, F_OK) != -1) 
-		return 1;
-	else
-		return 0;*/
-	
+
 	if (access(filename, F_OK) == -1)
 		return 0;
 	else
@@ -146,9 +141,14 @@ char* RmDir(char* p)
 		return p;
 	
 	
-	if (c == '/')
+	//if (c == '/')
+	switch(c)
 	{
-		c = p[--toRem];
+		case '/':
+			{
+			c = p[--toRem];
+			break;
+			}
 	}
 
 	
