@@ -397,12 +397,7 @@ char* CharRep(char* x, size_t start, size_t end, const char* y)
 	int xObj = 0;
 	int yObj = 0;
 	int doneObj = 0;
-/*
-	if (start == 0)
-		doneObj = end + 1;
-	else
-		doneObj = end + 1;
-*/
+
 	switch(start)
 	{
 		case 0:
@@ -414,7 +409,8 @@ char* CharRep(char* x, size_t start, size_t end, const char* y)
 	}
 			
 
-	for (stringAnsObj = 0; stringAnsObj < lengthNew; stringAnsObj++)
+	//for (stringAnsObj = 0; stringAnsObj < lengthNew; stringAnsObj++)
+	while (stringAnsObj < lengthNew)
 	{
 		if (stringAnsObj < start)
 			stringAns[stringAnsObj] = x[xObj++];
@@ -422,6 +418,7 @@ char* CharRep(char* x, size_t start, size_t end, const char* y)
 			stringAns[stringAnsObj] = y[yObj++];
 		else
 			stringAns[stringAnsObj] = x[doneObj++];
+		stringAnsObj++
 	}
 	free(x);
 	return stringAns;
