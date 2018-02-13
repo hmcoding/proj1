@@ -6,11 +6,11 @@
 
 void MemFunc(char** arr)
 {
-	size_t obj = 0; // store the maximum size of a theoretically possible object of any type (including array)
+	size_t obj = 0; 
 	
 	while (arr[obj] != NULL)
 	{
-			free(arr[obj]); // free( ) deallocates the memory previously allocated by a call to calloc
+			free(arr[obj]); 
 			++obj;
 	}
 
@@ -25,22 +25,20 @@ void DisplayArgs(char** args)
 	while (args[obj] != NULL)
 	{
 			printf(args[obj]);
-			printf("\n"); // to print a new line each time
+			printf("\n"); 
 			++obj;
 	}
 }
 
 char* DelFunc(char* line, size_t start, size_t end)
 {
-	// CHANGE MADE HERE : (start - end) TO (end - start)
-	// Need to add 1 to number of characters deleted due to the start
-	// and end iterators being inclusive
+	
 
 	size_t charAmount = end - start + 1;
 	int length = strlen(line)+1;
 	int lengthUpdate = length - (int)charAmount;
-	char* lineUpdate = (char*)calloc(lengthUpdate, sizeof(char)); // calloc allocates the requested memory and returns a pointer to it
-	// must put '\0' at the end
+	char* lineUpdate = (char*)calloc(lengthUpdate, sizeof(char)); 
+	
 	lineUpdate[lengthUpdate - 1] = '\0';
 	size_t obj1 = 0;
 	size_t obj2 = 0;
@@ -60,7 +58,7 @@ char* DelFunc(char* line, size_t start, size_t end)
 
 int ExistCheck(const char* filename)
 {
-	if (access(filename, F_OK) != -1) // F_OK is the existence check
+	if (access(filename, F_OK) != -1) 
 		return 1;
 	else
 		return 0;
@@ -69,9 +67,8 @@ int ExistCheck(const char* filename)
 int ExecCheck(const char* filename)
 {
 	struct stat s = {0}; 
-	stat(filename, &s); // information about the named file and write it to the area pointed to by the 2nd arg
-	//printf("%i\n", S_ISREG(s.st_mode));
-	int ans = S_ISREG(s.st_mode); // S_ISREG returns non-zero if the file is a regular file, st_mode is mode of file
+	stat(filename, &s);
+	int ans = S_ISREG(s.st_mode); 
 	return ans;
 }
 
@@ -89,7 +86,7 @@ char* LinkString(char* x, const char* y)
 		c = x[obj2];
 	}
 
-	// clear obj2
+	
 	obj2 = 0;
 	c = y[obj2];
 	while (c != '\0')
@@ -137,19 +134,19 @@ char* RmDir(char* p)
 	int endRem = toRem;
 	char c = p[toRem];
 
-	// root directory, do nothing
+	
 
 	if (c == '/' && toRem == 0)
 		return p;
 	
-	// '/' at end of path
+	
 	if (c == '/')
 	{
 		c = p[--toRem];
 	}
 
 	
-	// search for next '/'
+	
 	while (c != '/')
 	{
 		c = p[--toRem];
@@ -160,7 +157,7 @@ char* RmDir(char* p)
 
 int CmdCheck(char** args, int a)
 {
-	static char* cmdsInclude[5] = {"exit", "echo", "etime", "limits", NULL}; // static sets scope
+	static char* cmdsInclude[5] = {"exit", "echo", "etime", "limits", NULL}; 
 
 	if ((strcmp(args[a], "cd") != 0))
 	{
@@ -199,31 +196,31 @@ char* PathMaker(char* s)
 	if ((strlen(stringAns) == 1) && (strcmp(stringAns, "/") == 0))
 		return stringAns;
 
-	// check for ~
+	
 	if (stringAns[0] == '~')
 	{
-		stringAns = CharRep(stringAns, 0, 0, getenv("HOME")); // get env var of arg
+		stringAns = CharRep(stringAns, 0, 0, getenv("HOME")); 
 	}
 
-	// check for .
+	
 	if (stringAns[0] == '.' && stringAns[1] != '.')
 	{
-		// if in root, need to delete both . and /
+		
 		if (strcmp(getenv("PWD"), "/") == 0)
 			stringAns = CharRep(stringAns, 0, 1, getenv("PWD"));
-		// else, only need to delete .
+		
 		else
 			stringAns = CharRep(stringAns, 0, 0, getenv("PWD"));
 	}
 
-	// check for ..
+	
 	if (stringAns[0] == '.' && stringAns[1] == '.')
 	{
 		char* pwd = getenv("PWD");
 		char* pwdNew = (char*)calloc(strlen(pwd)+1,sizeof(char));
 		strcpy(pwdNew, pwd);
 		pwdNew = RmDir(pwdNew);
-		// attempt to hardcode fix changing to / from /home
+		
 		if (strcmp(pwdNew,"")==0)
 		{
 			stringAns = CharRep(stringAns, 0, strlen(stringAns)-1, "/");
@@ -234,7 +231,7 @@ char* PathMaker(char* s)
 		free(pwdNew);
 	}
 
-	// check for . and .. anywhere in string
+	
 	size_t obj = 1;
 	size_t slash1 = 0;
 	size_t slash2 = 0;
@@ -242,15 +239,15 @@ char* PathMaker(char* s)
 	{
 		if (stringAns[obj] == '.' && stringAns[obj-1] == '.')
 		{
-			// check for root
+			
 			if (obj > 2)
 			{
 				stringAns = DelFunc(stringAns, slash2, obj); 
-				// must start back at 0 to capture '/' locations
+				
 				obj = 0;
 				slash1 = 0;
 				slash2 = 0;
-				// empty string, down to root
+				
 				if (strcmp(stringAns,"") == 0)
 				{
 					stringAns = BPushString(stringAns, '/');
@@ -260,7 +257,7 @@ char* PathMaker(char* s)
 			else if (strlen(stringAns) > 3)
 			{
 				stringAns = DelFunc(stringAns, obj-2, obj);
-				obj = obj - 3;	// will be -1, ++it at end of loop will make 0
+				obj = obj - 3;	
 			}
 			else
 			{
@@ -268,7 +265,7 @@ char* PathMaker(char* s)
 				obj = obj - 2;
 			}
 		}
-		// check strlen to make sure no invalid memory read
+		
 		else if ((strlen(stringAns) >= 2) && stringAns[obj-1] == '.' && stringAns[obj] == '/')
 		{
 			stringAns = DelFunc(stringAns, obj-1, obj);
@@ -287,13 +284,13 @@ char* PathMaker(char* s)
 
 char* PathFromEVar(char* s)
 {
-	// add a '/' to the argument string
+	
 	char* sNew = (char*)calloc(strlen(s)+2, sizeof(char));
 	strcpy(sNew, "/");
 	sNew = LinkString(sNew, s);
 
 	char* p = getenv("PATH");	
-	// must create temp path array, because strtok changes its input
+	
 	char* pNew = (char*)calloc(strlen(p)+1,sizeof(char));
 	strcpy(pNew, p);
 	char* temp = strtok(pNew, ":");
@@ -327,24 +324,12 @@ char* PathFromEVar(char* s)
 
 int CmdVal(const char* s)
 {
-	// add a '/' to the argument string
+	
 	char* sNew = (char*)calloc(strlen(s)+2, sizeof(char));
 	strcpy(sNew, "/");
 	sNew = LinkString(sNew, s);
 
-	// check current working directory
-	/*char* pwd = getenv("PWD");
-	char* pwdNew = (char*)calloc(strlen(pwd)+2, sizeof(char));
-	strcpy(pwdNew, pwd);
-	pwdNew = PathClear(pwdNew);
-	pwdNew = LinkString(pwdNew, sNew);
-	if (ExistCheck(pwdNew))
-	{
-		free(sNew);
-		free(pwdNew);
-		return 1;
-	}
-	*/
+	
 	
 	char* p = getenv("PATH");	
 	char* pNew = (char*)calloc(strlen(p)+1,sizeof(char));
@@ -362,7 +347,7 @@ int CmdVal(const char* s)
 		ThePath = LinkString(ThePath, sNew);
 		ThePath = PathMaker(ThePath);
 
-		//printf("%s	%i\n", cur_path, IsExecutable(cur_path));
+		
 		if (ExecCheck(ThePath))
 		{
 			free(ThePath);
@@ -506,7 +491,7 @@ char** RemoveArr(char** argv, int a)
 char* Convert(char** argv)
 {
 	int obj = 0;
-	// empty argv
+	
 	if (argv[obj] == NULL)
 		return NULL;
 	char* ans = (char*)calloc(1, sizeof(char));
