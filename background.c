@@ -153,15 +153,6 @@ void displayProStart(const struct beginPro* p, int pos)
 {
 	if (!checkNull(p))
 	{
-		/*
-		if (p->pid_2 != -1)
-		{
-			printf("[%i]\t[%i][%i]\n", pos, p->pid_1, p->pid_2);
-		}
-		else
-		{
-			printf("[%i]\t[%i]\n", pos, p->pid_1);
-		}*/
 		
 		if (p->pid_2 == -1)
 			printf("[%i]\t[%i]\n", pos, p->pid_1);
