@@ -257,7 +257,6 @@ char** getPaths(char** args)
 			  }
 				break;
 			}
-		}
 	}
 	
 		
@@ -313,6 +312,7 @@ char** expandVar(char** args)
 				free(eVar);
 			  }
 			check = args[itrArg][++itrStr];
+			}
 		  }
 		itrStr = 0;
 		++itrArg;
