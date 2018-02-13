@@ -29,13 +29,13 @@ void DisplayArgs(char** args)
 	}
 }
 
-char* DelFunc(char* line, size_t begin, size_t end)
+char* DelFunc(char* line, size_t start, size_t end)
 {
 	// CHANGE MADE HERE : (start - end) TO (end - start)
 	// Need to add 1 to number of characters deleted due to the start
 	// and end iterators being inclusive
 
-	size_t charAmount = end - begin + 1;
+	size_t charAmount = end - start + 1;
 	int length = strlen(line)+1;
 	int lengthUpdate = length - (int)charAmount;
 	char* lineUpdate = (char*)calloc(lengthUpdate, sizeof(char)); // calloc allocates the requested memory and returns a pointer to it
@@ -46,7 +46,7 @@ char* DelFunc(char* line, size_t begin, size_t end)
 	char theChar = line[obj1];
 	while (theChar != '\0')
 	{
-		if (!((obj1 >= begin) && (obj1 <= end)))
+		if (!((obj1 >= start) && (obj1 <= end)))
 		{
 			lineUpdate[obj2++] = theChar;
 		}
@@ -57,18 +57,18 @@ char* DelFunc(char* line, size_t begin, size_t end)
 	return lineUpdate;
 }
 
-int ExistCheck(const char* file)
+int ExistCheck(const char* filename)
 {
-	if (access(file, F_OK) != -1) // F_OK is the existence check
+	if (access(filename, F_OK) != -1) // F_OK is the existence check
 		return 1;
 	else
 		return 0;
 }
 
-int ExecCheck(const char* file)
+int ExecCheck(const char* filename)
 {
 	struct stat s = {0}; 
-	stat(file, &s); // information about the named file and write it to the area pointed to by the 2nd arg
+	stat(filename, &s); // information about the named file and write it to the area pointed to by the 2nd arg
 	//printf("%i\n", S_ISREG(s.st_mode));
 	int ans = S_ISREG(s.st_mode); // S_ISREG returns non-zero if the file is a regular file, st_mode is mode of file
 	return ans;
@@ -384,9 +384,9 @@ char* PathClear(char* s)
 	return s;
 }
 
-char* CharRep(char* x, size_t begin, size_t end, const char* y)
+char* CharRep(char* x, size_t start, size_t end, const char* y)
 {
-	size_t lengthDel = end - begin + 1;
+	size_t lengthDel = end - start + 1;
 	size_t xLength = strlen(x);
 	size_t yLength = strlen(y);
 	size_t lengthNew = xLength - lengthDel + yLength;
@@ -399,16 +399,16 @@ char* CharRep(char* x, size_t begin, size_t end, const char* y)
 	int yObj = 0;
 	int doneObj = 0;
 
-	if (begin == 0)
+	if (start == 0)
 		doneObj = end + 1;
 	else
 		doneObj = end + 1;
 
 	for (stringAnsObj = 0; stringAnsObj < lengthNew; stringAnsObj++)
 	{
-		if (stringAnsObj < begin)
+		if (stringAnsObj < start)
 			stringAns[stringAnsObj] = x[xObj++];
-		else if ((stringAnsObj >= begin) && (stringAnsObj <= begin+ yLength -1))
+		else if ((stringAnsObj >= start) && (stringAnsObj <= start+ yLength -1))
 			stringAns[stringAnsObj] = y[yObj++];
 		else
 			stringAns[stringAnsObj] = x[doneObj++];
