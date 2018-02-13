@@ -174,12 +174,7 @@ char** externIn(char** argv, int inp, int back)
 				
 	back = StringCheck(argv, "&");
 	char* cmd = Convert(argv);
-	/*
-	if (back != -1)
-	{
-		argv = RemoveArr(argv, back);
-	}
-	*/
+	
 	
 	switch(back){
 		case -1:
@@ -208,9 +203,12 @@ char** externOut(char** argv, int outp, int back)
 	// update background iterator
 	back = StringCheck(argv, "&");
 	char* cmd = Convert(argv);
-	if (back != -1)
-	{
-		argv = RemoveArr(argv, back);
+	switch(back){
+		case -1:
+			break;
+		default:
+			argv = RemoveArr(argv, back);
+			break;
 	}
 	handleIO(argv, 0, filename, back, cmd);
 	free(filename);
@@ -222,9 +220,12 @@ char** externOut(char** argv, int outp, int back)
 char** externPipe(char** argv, int numpipe, int back)
 {
 	char* cmd = Convert(argv);
-	if (back != -1)
-	{
-		argv = RemoveArr(argv, back);
+	switch(back){
+		case -1:
+			break;
+		default:
+			argv = RemoveArr(argv, back);
+			break;
 	}
 
 	if (numpipe == 1 || numpipe == 2 || numpipe == 3)
