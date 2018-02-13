@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-char* ReadInput()
+char* grabIn()
 {
 	size_t BUFFER_SIZE = 512;
 	char* input_string = (char*)calloc(BUFFER_SIZE, sizeof(char));
@@ -18,11 +18,11 @@ char* ReadInput()
 	}
 }
 
-char** ParseInput(char* input)
+char** parseIn(char* inp)
 {
-	input = ParseWhitespace(input);
+	input = whiteParse(input);
 	
-	char** split_args = ParseArguments(input);
+	char** split_args = argsParse(input);
 	
 	if (split_args[0] != NULL)
 	{
@@ -32,9 +32,9 @@ char** ParseInput(char* input)
 		}
 	}
 	
-	split_args = ExpandVariables(split_args);
+	split_args = expandVar(split_args);
 	
-	split_args = ResolvePaths(split_args);
+	split_args = getPaths(split_args);
 	
 	
 	
@@ -43,7 +43,7 @@ char** ParseInput(char* input)
 	return split_args;
 }
 
-char* ParseWhitespace(char* line)
+char* whiteParse(char* line)
 {
 	size_t it = 0;
 	int whitespace_count = 0;
@@ -95,7 +95,7 @@ char* ParseWhitespace(char* line)
 	return line;
 }
 
-char** ParseArguments(char* input)
+char** argsParse(char* inp)
 {
 	size_t it = 0;
 	char c = input[it];
@@ -133,7 +133,7 @@ char** ParseArguments(char* input)
 	return ret;
 }
 
-char** ResolvePaths(char** args)
+char** getPaths(char** args)
 {
 	int arg_it = 0;		
 	int cmd_type = 0;	
@@ -242,7 +242,7 @@ char** ResolvePaths(char** args)
 	return args;
 }
 
-char** ExpandVariables(char** args)
+char** expandVar(char** args)
 {
 	size_t arg_it = 0;
 	size_t str_it = 0;
