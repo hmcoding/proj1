@@ -9,7 +9,7 @@ char* grabIn();
 char** parseIn(char* inp);
 
 
-char* whiteParse(char* inp);
+char* whiteParse(char* line);
 
 
 char** argsParse(char* inp);
