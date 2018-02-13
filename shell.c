@@ -21,14 +21,7 @@ void startMyShell()
 		{
 			
 		}
-		else if (strcmp(argv[0], "exit") == 0)
-		{
-			MemFunc(argv);
-			printf("Exiting Shell...\n");
-			KillZombies();
-			exitQueue();
-			exit(0);
-		}
+	
 		else if (strcmp(argv[0], "cd") == 0)
 		{
 			
@@ -41,7 +34,14 @@ void startMyShell()
 			
 
 		}
-
+		else if (strcmp(argv[0], "etime") == 0)
+		{
+			if (GetSize(argv) > 1)
+			{
+				argv = RemoveArr(argv, 0);
+				etimeCmd(argv);
+			}
+		}
 
 		else if (strcmp(argv[0], "io") == 0)
 		{
@@ -52,14 +52,15 @@ void startMyShell()
 			}
 
 		}
-		else if (strcmp(argv[0], "etime") == 0)
+		else if (strcmp(argv[0], "exit") == 0)
 		{
-			if (GetSize(argv) > 1)
-			{
-				argv = RemoveArr(argv, 0);
-				etimeCmd(argv);
-			}
+			MemFunc(argv);
+			printf("Exiting Shell...\n");
+			KillZombies();
+			exitQueue();
+			exit(0);
 		}
+		
 		else if (ExecCheck(argv[0]))
 		{
 			int back = StringCheck(argv, "&");
@@ -173,10 +174,22 @@ char** externIn(char** argv, int inp, int back)
 				
 	back = StringCheck(argv, "&");
 	char* cmd = Convert(argv);
+	/*
 	if (back != -1)
 	{
 		argv = RemoveArr(argv, back);
 	}
+	*/
+	
+	switch(back){
+		case -1:
+			break;
+		default:
+			argv = RemoveArr(argv, back);
+			break;
+	}
+	
+	
 	handleIO(argv, 1, filename, back, cmd);
 	free(filename);
 	free(cmd);
