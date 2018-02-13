@@ -69,7 +69,7 @@ char* whiteParse(char* line)
 			if (theChar == '\0')
 				hasit = 1;
 		}
-		//if (hasit == 1 && numWspace > 0)
+		
 		if (hasit == 1)
 		{
 			if(numWspace > 0)
