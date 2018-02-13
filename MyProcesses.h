@@ -1,5 +1,5 @@
-#ifndef _BACKGROUND_H
-#define _BACKGROUND_H
+#ifndef _MYPROCESSES_H
+#define _MYPROCESSES_H
 
 #include<stdlib.h>	// for NULL decleration
 #include<string.h>	// for string functionality (strcpy)
