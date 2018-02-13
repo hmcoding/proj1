@@ -74,7 +74,7 @@ void RunShell()
 			int background = StringCheck(argv, "&");
 			int I_loc = StringCheck(argv, "<");
 			int O_loc = StringCheck(argv, ">");
-			int pipe_count = ArgvCountSymbol(argv, "|");
+			int pipe_count = CountStrSymbol(argv, "|");
 			if (I_loc != -1)
 			{
 				argv = ExecuteExternalWithInput(argv, I_loc, background);
