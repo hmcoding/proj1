@@ -446,7 +446,7 @@ int StringCheck(char** argv, const char* s)
 	while (argv[obj] != NULL)
 	{
 		//if (strcmp(argv[obj], s) == 0)
-		switch(strcmp(argv[obj], s)
+		switch(strcmp(argv[obj], s))
 		{
 			case 0:
 				return obj;
