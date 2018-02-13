@@ -45,10 +45,8 @@ char* DelFunc(char* line, size_t start, size_t end)
 	char theChar = line[obj1];
 	while (theChar != '\0')
 	{
-		//if (!((obj1 >= start) && (obj1 <= end)))
-		if (!(obj1 >= start) )
+		if (!((obj1 >= start) && (obj1 <= end)))
 		{
-			if(!(obj1 <= end))
 				lineUpdate[obj2++] = theChar;
 		}
 		theChar = line[++obj1];
