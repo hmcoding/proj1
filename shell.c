@@ -317,12 +317,7 @@ void handleIO(char** argv, int directory, char* filename, int back, char* cmd)
 	{
 		int now;
 		int fIO = open(filename, O_CREAT|O_WRONLY|O_TRUNC, 0777);
-		/*
-		if (fIO == -1)
-		{
-			printf("Cannot open the file filename: %s\n", filename);
-			exit(1);
-		}*/
+		
 		
 		switch(fIO){
 			case -1:
@@ -472,11 +467,19 @@ int errorsBackground(char** argv)
 	int outp = StringCheck(argv, ">");
 	int thepipe = StringCheck(argv, "|");
 	int theback = StringCheck(argv, "&");
-	
+	/*
 	if (theback == -1)
 	{
 		return 0;
 	}
+	*/
+	
+	switch(theback){
+		case -1:
+			return 0;
+			break;
+	}
+	
 	
 	// if not < > or |, no error
 	if ((inp == -1) &&
@@ -487,31 +490,52 @@ int errorsBackground(char** argv)
 	}
 	else
 	{
-		if (inp != -1)
+		//if (inp != -1)
+		switch(inp)
 		{
+			case -1:
+				break;
+			default:
+			{
 			// & neighbors <
 			if (inp - 1 == theback || inp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
+			break;
+			}
 		}
-		if (outp != -1)
+		//if (outp != -1)
+		switch(outp)
 		{
+			case -1:
+				break;
+			default:
+			{
 			// & neighbors >
 			if (outp - 1 == theback || outp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
+			break;
+			}
 		}
-		if (thepipe != -1)
+		//if (thepipe != -1)
+		switch(thepipe)
 		{
+			case -1:
+				break;
+			default:
+			{
 			// & neighbors |
 			if (thepipe - 1 == theback || thepipe + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
+			}
+			break;
 			}
 		}
 	}
