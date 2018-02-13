@@ -2,7 +2,7 @@
 
 
 
-void RunShell()
+void startMyShell()
 {
 	int running = 1;
 	char* str;
@@ -13,11 +13,11 @@ void RunShell()
 		
 
 		checkQueue();
-		PrintPrompt();
+		displayPrompt();
 		str = ReadInput();
 		argv = ParseInput(str);
 		
-		if ((argv[0] == NULL) || CheckForIOandPipeErrors(argv) || CheckForBackgroundErrors(argv))
+		if ((argv[0] == NULL) || errorsPipeIO(argv) || errorsBackground(argv))
 		{
 			// do nothing if empty arguments
 		}
@@ -36,10 +36,10 @@ void RunShell()
 			if (GetSize(argv) <= 2)
 			{
 				if (GetSize(argv) == 2){
-					ChangeDirectory(argv[1]);
+					dirChange(argv[1]);
 				}
 				else
-					ChangeDirectory(getenv("HOME"));
+					dirChange(getenv("HOME"));
 
 			}
 
@@ -58,7 +58,7 @@ void RunShell()
 			if (GetSize(argv) > 1)
 			{
 				argv = RemoveArr(argv, 0);
-				Limits(argv);
+				ioCmd(argv);
 			}
 
 		}
@@ -67,7 +67,7 @@ void RunShell()
 			if (GetSize(argv) > 1)
 			{
 				argv = RemoveArr(argv, 0);
-				ETime(argv);
+				etimeCmd(argv);
 			}
 		}
 		else if (ExecCheck(argv[0]))
@@ -78,15 +78,15 @@ void RunShell()
 			int pipe_count = CountStr(argv, "|");
 			if (I_loc != -1)
 			{
-				argv = ExecuteExternalWithInput(argv, I_loc, background);
+				argv = externIn(argv, I_loc, background);
 			}
 			else if (O_loc != -1)
 			{
-				argv = ExecuteExternalWithOutput(argv, O_loc, background);
+				argv = externOut(argv, O_loc, background);
 			}
 			else if (pipe_count > 0)
 			{
-				argv = ExecuteExternalWithPipe(argv, pipe_count, background);
+				argv = externPipe(argv, pipe_count, background);
 			}
 			else
 			{
@@ -95,7 +95,7 @@ void RunShell()
 				{
 					argv = RemoveArr(argv, background);
 				}
-				ExecuteExternal(argv, background, cmd);
+				theExtern(argv, background, cmd);
 				free(cmd);
 			}
 		}
@@ -106,7 +106,7 @@ void RunShell()
 	}
 }
 
-void ChangeDirectory(const char* dir)
+void dirChange(const char* dir)
 {
 
 	int ret = chdir(dir);
@@ -127,7 +127,7 @@ void ChangeDirectory(const char* dir)
 
 
 
-void ExecuteExternal(char** argv, int background, char* cmd)
+void theExtern(char** argv, int background, char* cmd)
 {
 	int status;
 	pid_t pid = fork();
@@ -173,7 +173,7 @@ void ExecuteExternal(char** argv, int background, char* cmd)
 	}
 }
 
-char** ExecuteExternalWithInput(char** argv, int I_loc, int background)
+char** externIn(char** argv, int I_loc, int background)
 {
 	char* filename = (char*)calloc(strlen(argv[I_loc+1])+1, sizeof(char));
 	strcpy(filename, argv[I_loc+1]);
@@ -188,14 +188,14 @@ char** ExecuteExternalWithInput(char** argv, int I_loc, int background)
 	{
 		argv = RemoveArr(argv, background);
 	}
-	IORedirect(argv, 1, filename, background, cmd);
+	handleIO(argv, 1, filename, background, cmd);
 	free(filename);
 	free(cmd);
 	
 	return argv;
 }
 
-char** ExecuteExternalWithOutput(char** argv, int O_loc, int background)
+char** externOut(char** argv, int O_loc, int background)
 {
 	char* filename = (char*)calloc(strlen(argv[O_loc+1])+1, sizeof(char));
 	strcpy(filename, argv[O_loc+1]);
@@ -210,14 +210,14 @@ char** ExecuteExternalWithOutput(char** argv, int O_loc, int background)
 	{
 		argv = RemoveArr(argv, background);
 	}
-	IORedirect(argv, 0, filename, background, cmd);
+	handleIO(argv, 0, filename, background, cmd);
 	free(filename);
 	free(cmd);
 	
 	return argv;
 }
 
-char** ExecuteExternalWithPipe(char** argv, int pipe_count, int background)
+char** externPipe(char** argv, int pipe_count, int background)
 {
 	char* cmd = Convert(argv);
 	if (background != -1)
@@ -306,7 +306,7 @@ char** ExecuteExternalWithPipe(char** argv, int pipe_count, int background)
 
 }
 
-void IORedirect(char** argv, int dir, char* filename, int background, char* cmd)
+void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
 {
 	// output redirection
 	switch(dir){
@@ -328,7 +328,7 @@ void IORedirect(char** argv, int dir, char* filename, int background, char* cmd)
 			dup(fd);
 			close(fd);
 			execv(argv[0], argv);
-			printf("Unknown command in IORedirect\n");
+			printf("Unknown command in handleIO\n");
 			exit(1);
 			break;
 		}
@@ -352,7 +352,7 @@ void IORedirect(char** argv, int dir, char* filename, int background, char* cmd)
 		}
 		case 0:
 		{
-			printf("Fork failed in IORedirect\n");
+			printf("Fork failed in handleIO\n");
 			exit(1);
 			break;
 		}
@@ -366,7 +366,7 @@ void IORedirect(char** argv, int dir, char* filename, int background, char* cmd)
 		switch(fd){
               	  case -1:
 		  {
-			printf("Error, cannot access file in IORedirect!\n");
+			printf("Error, cannot access file in handleIO!\n");
 			exit(1);
 			break;
 		  }
@@ -381,7 +381,7 @@ void IORedirect(char** argv, int dir, char* filename, int background, char* cmd)
 			close(fd);
 			execv(argv[0], argv);
 
-			printf("Unknown command in IORedirect\n");
+			printf("Unknown command in handleIO\n");
 			exit(1);
 			break;
 		}
@@ -406,7 +406,7 @@ void IORedirect(char** argv, int dir, char* filename, int background, char* cmd)
 		}
 		case 0:
 		{
-			printf("Fork() failed in IORedirect\n");
+			printf("Fork() failed in handleIO\n");
 			exit(1);
 			break;
 		}
@@ -416,7 +416,7 @@ void IORedirect(char** argv, int dir, char* filename, int background, char* cmd)
 	}
 }
 
-int CheckForIOandPipeErrors(char** argv)
+int errorsPipeIO(char** argv)
 {
 	
 	switch(GetSize(argv)){
@@ -453,7 +453,7 @@ int CheckForIOandPipeErrors(char** argv)
 	return 0;
 }
 
-int CheckForBackgroundErrors(char** argv)
+int errorsBackground(char** argv)
 {
 	int I_loc = StringCheck(argv, "<");
 	int O_loc = StringCheck(argv, ">");
@@ -505,7 +505,7 @@ int CheckForBackgroundErrors(char** argv)
 	return 0;
 }
 
-void PrintPrompt()
+void displayPrompt()
 {
 	const char* directory = "PWD";
 	const char* machine = "MACHINE";
@@ -523,7 +523,7 @@ void PrintPrompt()
 }
 
 
-void Limits(char** argv)
+void ioCmd(char** argv)
 {
 	int childID;
 	int status;
@@ -571,7 +571,7 @@ void Limits(char** argv)
 	}
 	case 0:
 	{
-		printf("Fork failed in Limits()\n");
+		printf("Fork failed in ioCmd()\n");
 		exit(1);
 		break;
 	}
@@ -614,7 +614,7 @@ void ioacct( pid_t child ) {
 */
 
 
-void ETime(char** argv)
+void etimeCmd(char** argv)
 {
 	int status;
 	struct timeval timeofday;
@@ -636,7 +636,7 @@ void ETime(char** argv)
 		waitpid(childPID, &status, 0);
 		break;
 	  case 0:
-		printf("Fork failed in ETime\n");
+		printf("Fork failed in etimeCmd\n");
 		break;
 	}
 
