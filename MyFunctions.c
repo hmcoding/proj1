@@ -418,7 +418,7 @@ char* CharRep(char* x, size_t start, size_t end, const char* y)
 			stringAns[stringAnsObj] = y[yObj++];
 		else
 			stringAns[stringAnsObj] = x[doneObj++];
-		stringAnsObj++
+		stringAnsObj++;
 	}
 	free(x);
 	return stringAns;
