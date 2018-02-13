@@ -443,7 +443,7 @@ int StringCheck(char** argv, const char* s)
 	int obj = 0;
 	while (argv[obj] != NULL)
 	{
-		//if (strcmp(argv[obj], s) == 0)
+		
 		switch(strcmp(argv[obj], s))
 		{
 			case 0:
@@ -533,9 +533,12 @@ int CountStr(char** argv, const char* s)
 	int track = 0;
 	while (argv[obj] != NULL)
 	{
-		if (strcmp(argv[obj], s) == 0)
+		//if (strcmp(argv[obj], s) == 0)
+		switch(strcmp(argv[obj], s))
 		{
-			++track;
+			case 0:
+				++track;
+				break;
 		}
 		++obj;
 	}
