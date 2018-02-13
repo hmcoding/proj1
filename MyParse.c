@@ -148,7 +148,6 @@ char** getPaths(char** args)
 	while(args[itrArg] != NULL)
 	{
 		
-		//if (new == 1)
 		switch(new){
 			case 1:
 			{
@@ -173,13 +172,16 @@ char** getPaths(char** args)
 		}
 		
 		// cd
-		if (whatCmd == 2)
+		//if (whatCmd == 2)
+		switch(whatCmd)
 		{
+			case 2:		
+			{
 			
 
 
 			if (itrArg == (itrCmd + 1))
-			{
+			  {
 				if (!CharCheck(args[itrArg], '/'))
 				{
 					if (!CharCheck(args[itrArg], '~') && !CharCheck(args[itrArg], '.'))
@@ -199,17 +201,18 @@ char** getPaths(char** args)
 					}
 				}
 				args[itrArg] = PathMaker(args[itrArg]);
+			  }
+				break;
+
+
 			}
 
-
-		}
-
 		
-		else if (whatCmd == 3)
-		{
+			case 3:
+			{
 			
 			if ((strcmp(cmd, "etime") == 0) || (strcmp(cmd, "io") == 0))
-			{
+			  {
 				
 				if (itrArg == (itrCmd + 1))
 				{
@@ -224,14 +227,15 @@ char** getPaths(char** args)
 
 					
 				}
+			  }
+				break;
 			}
-		}
 
 		
-		else if (whatCmd == 1)
-		{
-			if (itrArg == itrCmd)
+			case 1:
 			{
+			if (itrArg == itrCmd)
+			  {
 				if (CharCheck(args[itrArg], '/') == 1)
 				{
 					args[itrArg] = PathMaker(args[itrArg]);
@@ -240,8 +244,10 @@ char** getPaths(char** args)
 				{
 					args[itrArg] = PathFromEVar(args[itrArg]);
 				}
+			  }
+				break;
 			}
-		}
+	}
 	
 		
 		++itrArg;
