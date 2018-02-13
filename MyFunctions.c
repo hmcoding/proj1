@@ -4,19 +4,9 @@
 #include<unistd.h>
 
 
-void MemFunc(char** arr)
-{
-	size_t obj = 0; 
-	
-	while (arr[obj] != NULL)
-	{
-			free(arr[obj]); 
-			++obj;
-	}
 
 
-	free(arr);
-}
+// PRINTING FUNCTIONS //////////////////////
 
 void DisplayArgs(char** args)
 {
@@ -29,6 +19,10 @@ void DisplayArgs(char** args)
 			++obj;
 	}
 }
+
+///////////////////////////////////////
+
+// REMOVE & DELETE FUNCTIONS /////////////////////////////
 
 char* DelFunc(char* line, size_t start, size_t end)
 {
@@ -54,79 +48,6 @@ char* DelFunc(char* line, size_t start, size_t end)
 	free(line);
 	line = NULL;
 	return lineUpdate;
-}
-
-int ExistCheck(const char* filename)
-{
-
-	if (access(filename, F_OK) == -1)
-		return 0;
-	else
-		return 1;
-}
-
-int ExecCheck(const char* filename)
-{
-	struct stat s = {0}; 
-	stat(filename, &s);
-	int ans = S_ISREG(s.st_mode); 
-	return ans;
-}
-
-char* LinkString(char* x, const char* y)
-{
-	size_t lengthTot = strlen(x) + strlen(y) + 1;
-	char* stringUpdate = (char*)calloc(lengthTot, sizeof(char));
-	int obj1 = strlen(x);
-	int obj2 = 0;
-	char c = x[obj2];
-
-	while(c != '\0')
-	{
-		stringUpdate[obj2++] = c;
-		c = x[obj2];
-	}
-
-	
-	obj2 = 0;
-	c = y[obj2];
-	while (c != '\0')
-	{
-		stringUpdate[obj1++] = c;
-		c = y[++obj2];
-	}
-
-	stringUpdate[obj1] = '\0';
-	free(x);
-	return stringUpdate;
-}
-
-char* BPushString(char* x, char y)
-{
-	size_t lengthTot = strlen(x) + 2;
-	char* stringUpdate = (char*)calloc(lengthTot, sizeof(char));
-	strcpy(stringUpdate, x);
-	stringUpdate[lengthTot-2] = y;
-	stringUpdate[lengthTot-1] = '\0';
-	free(x);
-	return stringUpdate;
-}
-
-char* FPushString(char* x, char y)
-{
-	size_t lengthTot = strlen(x) + 2;
-	char* stringUpdate = (char*)calloc(lengthTot, sizeof(char));
-	strcpy(stringUpdate, x);
-	stringUpdate[0] = y;
-	size_t obj = 0;
-	while(x[obj] != '\0')
-	{
-		stringUpdate[obj+1] = x[obj];
-		++obj;
-	}
-	stringUpdate[obj+1] = '\0';
-	free(x);
-	return stringUpdate;
 }
 
 char* RmDir(char* p)
@@ -160,6 +81,91 @@ char* RmDir(char* p)
 	}
 
 	return DelFunc(p, toRem, endRem);
+}
+
+char* CharRep(char* x, size_t start, size_t end, const char* y)
+{
+	size_t lengthDel = end - start + 1;
+	size_t xLength = strlen(x);
+	size_t yLength = strlen(y);
+	size_t lengthNew = xLength - lengthDel + yLength;
+
+	char* stringAns = (char*)calloc(lengthNew + 1, sizeof(char));
+	stringAns[lengthNew - 1] = '\0'; 
+
+	int stringAnsObj = 0;
+	int xObj = 0;
+	int yObj = 0;
+	int doneObj = 0;
+
+	switch(start)
+	{
+		case 0:
+			doneObj = end + 1;
+			break;
+		default:
+			doneObj = end + 1;
+			break;
+	}
+			
+
+	while (stringAnsObj < lengthNew)
+	{
+		if (stringAnsObj < start)
+			stringAns[stringAnsObj] = x[xObj++];
+		else if ((stringAnsObj >= start) && (stringAnsObj <= start+ yLength -1))
+			stringAns[stringAnsObj] = y[yObj++];
+		else
+			stringAns[stringAnsObj] = x[doneObj++];
+		stringAnsObj++;
+	}
+	free(x);
+	return stringAns;
+}
+
+char** RemoveArr(char** argv, int a)
+{
+	if (a > GetSize(argv))
+	{
+		return argv;
+	}
+	int obj1 = 0;
+	int obj2 = 0;
+
+	char** vecNew = (char**)calloc(GetSize(argv),sizeof(char*));
+	while (argv[obj1] != NULL)
+	{
+		if (obj1 != a)
+		{
+			vecNew[obj2] = (char*)calloc(strlen(argv[obj1])+1, sizeof(char));
+			strcpy(vecNew[obj2], argv[obj1]);
+			++obj2;
+		}
+		++obj1;
+	}
+	vecNew[obj2] = NULL;
+	MemFunc(argv);
+	return vecNew;
+}
+/////////////////////////////////////////////
+
+// CHECKING FUNCTIONS ////////////////////////
+
+int ExistCheck(const char* filename)
+{
+
+	if (access(filename, F_OK) == -1)
+		return 0;
+	else
+		return 1;
+}
+
+int ExecCheck(const char* filename)
+{
+	struct stat s = {0}; 
+	stat(filename, &s);
+	int ans = S_ISREG(s.st_mode); 
+	return ans;
 }
 
 int CmdCheck(char** args, int a)
@@ -198,6 +204,94 @@ int CmdCheck(char** args, int a)
 	return 0;
 
 }	
+
+int CharCheck(const char* s, char c)
+{
+	size_t obj = 0;
+	while (s[obj] != '\0')
+	{
+		if (s[obj] == c)
+		{
+				return 1;
+
+		}
+		++obj;
+	}
+	return 0;
+}
+
+int StringCheck(char** argv, const char* s)
+{
+	int obj = 0;
+	while (argv[obj] != NULL)
+	{
+		
+		switch(strcmp(argv[obj], s))
+		{
+			case 0:
+				return obj;
+				break;
+		}
+		++obj;
+	}
+	return -1;
+}
+
+////////////////////////////////
+
+
+
+// PUSH FUNCTIONS //////////////////////////////
+
+char* BPushString(char* x, char y)
+{
+	size_t lengthTot = strlen(x) + 2;
+	char* stringUpdate = (char*)calloc(lengthTot, sizeof(char));
+	strcpy(stringUpdate, x);
+	stringUpdate[lengthTot-2] = y;
+	stringUpdate[lengthTot-1] = '\0';
+	free(x);
+	return stringUpdate;
+}
+
+char* FPushString(char* x, char y)
+{
+	size_t lengthTot = strlen(x) + 2;
+	char* stringUpdate = (char*)calloc(lengthTot, sizeof(char));
+	strcpy(stringUpdate, x);
+	stringUpdate[0] = y;
+	size_t obj = 0;
+	while(x[obj] != '\0')
+	{
+		stringUpdate[obj+1] = x[obj];
+		++obj;
+	}
+	stringUpdate[obj+1] = '\0';
+	free(x);
+	return stringUpdate;
+}
+
+char** PBackArr(char** argv, const char* s)
+{
+	char** vecNew = (char**)calloc(GetSize(argv)+2,sizeof(char*));
+	int obj = 0;
+	while (argv[obj] != NULL)
+	{
+		vecNew[obj] = (char*)calloc(strlen(argv[obj])+1, sizeof(char));
+		strcpy(vecNew[obj], argv[obj]);
+		++obj;
+	}
+	vecNew[obj] = (char*)calloc(strlen(s)+1, sizeof(char));
+	strcpy(vecNew[obj], s);
+	vecNew[obj+1] = NULL;
+	MemFunc(argv);
+	return vecNew;
+}
+
+///////////////////////////
+
+
+// PATH FUNCTIONS /////////////////////////////////
 
 char* PathMaker(char* s)
 {
@@ -263,7 +357,7 @@ char* PathMaker(char* s)
 				slash1 = 0;
 				slash2 = 0;
 				
-				//if (strcmp(stringAns,"") == 0)
+				
 				switch (strcmp(stringAns,""))
 				{
 					case 0:
@@ -342,6 +436,18 @@ char* PathFromEVar(char* s)
 
 }
 
+char* PathClear(char* s)
+{
+	size_t objLast = strlen(s) - 1;
+	if (s[objLast] == '/')
+	{
+		s = DelFunc(s, objLast, objLast);
+	}
+	return s;
+}
+
+///////////////////////////
+
 int CmdVal(const char* s)
 {
 	
@@ -383,87 +489,23 @@ int CmdVal(const char* s)
 	return 0;
 }
 
-char* PathClear(char* s)
+
+
+void MemFunc(char** arr)
 {
-	size_t objLast = strlen(s) - 1;
-	if (s[objLast] == '/')
+	size_t obj = 0; 
+	
+	while (arr[obj] != NULL)
 	{
-		s = DelFunc(s, objLast, objLast);
+			free(arr[obj]); 
+			++obj;
 	}
-	return s;
+
+
+	free(arr);
 }
 
-char* CharRep(char* x, size_t start, size_t end, const char* y)
-{
-	size_t lengthDel = end - start + 1;
-	size_t xLength = strlen(x);
-	size_t yLength = strlen(y);
-	size_t lengthNew = xLength - lengthDel + yLength;
 
-	char* stringAns = (char*)calloc(lengthNew + 1, sizeof(char));
-	stringAns[lengthNew - 1] = '\0'; 
-
-	int stringAnsObj = 0;
-	int xObj = 0;
-	int yObj = 0;
-	int doneObj = 0;
-
-	switch(start)
-	{
-		case 0:
-			doneObj = end + 1;
-			break;
-		default:
-			doneObj = end + 1;
-			break;
-	}
-			
-
-	while (stringAnsObj < lengthNew)
-	{
-		if (stringAnsObj < start)
-			stringAns[stringAnsObj] = x[xObj++];
-		else if ((stringAnsObj >= start) && (stringAnsObj <= start+ yLength -1))
-			stringAns[stringAnsObj] = y[yObj++];
-		else
-			stringAns[stringAnsObj] = x[doneObj++];
-		stringAnsObj++;
-	}
-	free(x);
-	return stringAns;
-}
-
-int CharCheck(const char* s, char c)
-{
-	size_t obj = 0;
-	while (s[obj] != '\0')
-	{
-		if (s[obj] == c)
-		{
-				return 1;
-
-		}
-		++obj;
-	}
-	return 0;
-}
-
-int StringCheck(char** argv, const char* s)
-{
-	int obj = 0;
-	while (argv[obj] != NULL)
-	{
-		
-		switch(strcmp(argv[obj], s))
-		{
-			case 0:
-				return obj;
-				break;
-		}
-		++obj;
-	}
-	return -1;
-}
 
 int GetSize(char** argv)
 {
@@ -477,47 +519,8 @@ int GetSize(char** argv)
 	return obj;
 }
 
-char** PBackArr(char** argv, const char* s)
-{
-	char** vecNew = (char**)calloc(GetSize(argv)+2,sizeof(char*));
-	int obj = 0;
-	while (argv[obj] != NULL)
-	{
-		vecNew[obj] = (char*)calloc(strlen(argv[obj])+1, sizeof(char));
-		strcpy(vecNew[obj], argv[obj]);
-		++obj;
-	}
-	vecNew[obj] = (char*)calloc(strlen(s)+1, sizeof(char));
-	strcpy(vecNew[obj], s);
-	vecNew[obj+1] = NULL;
-	MemFunc(argv);
-	return vecNew;
-}
 
-char** RemoveArr(char** argv, int a)
-{
-	if (a > GetSize(argv))
-	{
-		return argv;
-	}
-	int obj1 = 0;
-	int obj2 = 0;
 
-	char** vecNew = (char**)calloc(GetSize(argv),sizeof(char*));
-	while (argv[obj1] != NULL)
-	{
-		if (obj1 != a)
-		{
-			vecNew[obj2] = (char*)calloc(strlen(argv[obj1])+1, sizeof(char));
-			strcpy(vecNew[obj2], argv[obj1]);
-			++obj2;
-		}
-		++obj1;
-	}
-	vecNew[obj2] = NULL;
-	MemFunc(argv);
-	return vecNew;
-}
 
 char* Convert(char** argv)
 {
@@ -554,4 +557,30 @@ int CountStr(char** argv, const char* s)
 	return track;
 }
 
+char* LinkString(char* x, const char* y)
+{
+	size_t lengthTot = strlen(x) + strlen(y) + 1;
+	char* stringUpdate = (char*)calloc(lengthTot, sizeof(char));
+	int obj1 = strlen(x);
+	int obj2 = 0;
+	char c = x[obj2];
 
+	while(c != '\0')
+	{
+		stringUpdate[obj2++] = c;
+		c = x[obj2];
+	}
+
+	
+	obj2 = 0;
+	c = y[obj2];
+	while (c != '\0')
+	{
+		stringUpdate[obj1++] = c;
+		c = y[++obj2];
+	}
+
+	stringUpdate[obj1] = '\0';
+	free(x);
+	return stringUpdate;
+}
