@@ -68,7 +68,7 @@ void OnePipe(char** argv1, char** argv2, int background, char* cmd)
 		printf("Error in fork1 of OnePipe()\n");
 	}
 }
-*/
+
 void TwoPipe(char** argv1, char** argv2, char** argv3, int background, char* cmd)
 {
 	int status;
@@ -165,7 +165,7 @@ void TwoPipe(char** argv1, char** argv2, char** argv3, int background, char* cmd
 		DisplayArgs(argv1);
 	}
 }
-
+*/
 void ThreePipe(char** argv1, char** argv2, char** argv3, char** argv4, int background, char* cmd)
 {
 	int status;
