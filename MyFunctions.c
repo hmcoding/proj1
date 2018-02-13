@@ -409,7 +409,6 @@ char* CharRep(char* x, size_t start, size_t end, const char* y)
 	}
 			
 
-	//for (stringAnsObj = 0; stringAnsObj < lengthNew; stringAnsObj++)
 	while (stringAnsObj < lengthNew)
 	{
 		if (stringAnsObj < start)
@@ -429,9 +428,12 @@ int CharCheck(const char* s, char c)
 	size_t obj = 0;
 	while (s[obj] != '\0')
 	{
-		if (s[obj] == c)
+		//if (s[obj] == c)
+		switch(c)
 		{
-			return 1;
+			default:
+				return 1;
+				break;
 		}
 		++obj;
 	}
@@ -443,9 +445,12 @@ int StringCheck(char** argv, const char* s)
 	int obj = 0;
 	while (argv[obj] != NULL)
 	{
-		if (strcmp(argv[obj], s) == 0)
+		//if (strcmp(argv[obj], s) == 0)
+		switch(strcmp(argv[obj], s)
 		{
-			return obj;
+			case 0:
+				return obj;
+				break;
 		}
 		++obj;
 	}
