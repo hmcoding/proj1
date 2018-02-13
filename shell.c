@@ -200,7 +200,7 @@ char** externOut(char** argv, int outp, int back)
 	argv = RemoveArr(argv, outp);
 	argv = RemoveArr(argv, outp);
 			
-	// update background iterator
+	
 	back = StringCheck(argv, "&");
 	char* cmd = Convert(argv);
 	switch(back){
@@ -311,7 +311,7 @@ char** externPipe(char** argv, int numpipe, int back)
 
 void handleIO(char** argv, int directory, char* filename, int back, char* cmd)
 {
-	// output redirection
+	
 	switch(directory){
 	case 0:
 	{
@@ -490,53 +490,54 @@ int errorsBackground(char** argv)
 	}
 	else
 	{
-		//if (inp != -1)
-		switch(inp)
+		if (inp != -1)
+		//switch(inp)
 		{
+			/*
 			case -1:
 				break;
 			default:
-			{
+			{*/
 			// & neighbors <
 			if (inp - 1 == theback || inp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
-			break;
-			}
+			//break;
+			//}
 		}
-		//if (outp != -1)
-		switch(outp)
+		if (outp != -1)
+		//switch(outp)
 		{
-			case -1:
+			/*case -1:
 				break;
 			default:
-			{
+			{*/
 			// & neighbors >
 			if (outp - 1 == theback || outp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
-			break;
-			}
+			//break;
+			//}
 		}
-		//if (thepipe != -1)
-		switch(thepipe)
-		{
+		if (thepipe != -1)
+		//switch(thepipe)
+		{/*
 			case -1:
 				break;
 			default:
-			{
+			{*/
 			// & neighbors |
 			if (thepipe - 1 == theback || thepipe + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
-			break;
-			}
+			//break;
+			//}
 		}
 	}
 	return 0;
