@@ -21,16 +21,16 @@ void startMyShell();
 void dirChange(const char* path);
 
 
-void theExtern(char** argv, int background, char* cmd);
+void theExtern(char** argv, int back, char* cmd);
 
-char** externIn(char** argv, int I_loc, int background);
+char** externIn(char** argv, int inp, int back);
 
-char** externOut(char** argv, int O_loc, int background);
+char** externOut(char** argv, int outp, int back);
 
-char** externPipe(char** argv, int pipe_count, int background);
+char** externPipe(char** argv, int numpipe, int back);
 
 
-void handleIO(char** argv, int dir, char* filename, int background, char* cmd);
+void handleIO(char** argv, int dir, char* filename, int back, char* cmd);
 
 int errorsPipeIO(char** argv);
 
