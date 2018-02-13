@@ -148,10 +148,11 @@ void ExecuteExternal(char** argv, int background, char* cmd)
 	}
 	default:
 	{
-		printf("HI\n");
+		
 		switch(background){
 		default:
 		{
+			printf("HI\n");
 			waitpid(pid, &status, WNOHANG);
 			handleQueue(newPro(pid, -1, cmd));
 			//kill(pid, SIGSTOP);
@@ -160,6 +161,7 @@ void ExecuteExternal(char** argv, int background, char* cmd)
 		}
 		case -1:
 		{
+			printf("YO\n");
 			waitpid(pid, &status, 0);
 			break;
 		}
