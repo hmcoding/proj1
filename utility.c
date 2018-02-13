@@ -161,15 +161,15 @@ int CmdCheck(char** args, int a)
 {
 	static char* cmdsInclude[6] = {"exit", "echo", "cd", "etime", "limits", NULL}; // static sets scope
 
-	//if ((strcmp(args[a], "cd") != 0))
-	//{
+	if ((strcmp(args[a], "cd") != 0))
+	{
 		
 		if (CmdVal(args[a]))
 			return 1;
-	//}
+	}
 	
 	
-	if (strcmp(args[a], "cd") == 0)
+	else if (strcmp(args[a], "cd") == 0)
 		return 2;
 
 	size_t obj = 0;
