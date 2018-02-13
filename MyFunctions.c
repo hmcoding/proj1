@@ -136,8 +136,6 @@ char* RmDir(char* p)
 	char c = p[toRem];
 
 	
-
-	//if (c == '/' && toRem == 0)
 	if (c == '/')
 	{
 		if(toRem == 0)
@@ -167,7 +165,8 @@ char* RmDir(char* p)
 int CmdCheck(char** args, int a)
 {
 	static char* cmdsInclude[5] = {"exit", "echo", "etime", "limits", NULL}; 
-
+	int equal = strcmp(args[a], "cd");
+	
 	if ((strcmp(args[a], "cd") != 0))
 	{
 		
