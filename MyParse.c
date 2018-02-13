@@ -241,11 +241,8 @@ char** getPaths(char** args)
 		
 			case 1:
 			{
-			//if (itrArg == itrCmd)
-			  switch(itrArg)
+			if (itrArg == itrCmd)
 			  {
-				  case itrCmd:
-					  {
 				
 				if (CharCheck(args[itrArg], '/') != 1)
 				{
@@ -255,8 +252,7 @@ char** getPaths(char** args)
 				{
 					args[itrArg] = PathMaker(args[itrArg]);
 				}
-						  break;
-					  }
+						 
 				
 			  }
 				break;
