@@ -10,7 +10,7 @@ void RunShell()
 	Init();
 	while (running)
 	{
-		KillZombies();
+		//KillZombies();
 
 		checkQueue();
 		PrintPrompt();
