@@ -252,20 +252,19 @@ char** externPipe(char** argv, int numpipe, int back)
                 argv2 = PBackArr(argv2, argv[it]);
                 ++it;
             }
-            //OnePipe(argv1, argv2, back, cmd);
 		
 		int status;
 	int p1_to_p2[2];
 	pipe(p1_to_p2);
 	
-	// fork1
+	
 	pid_t c1PID = fork();
 	
-	// parent of fork1
+	
 	if (c1PID > 0)
 	{
 		pid_t c2PID = fork();
-		// parent of fork2
+		
 		if (c2PID > 0)
 		{
 			close(3);
@@ -282,7 +281,7 @@ char** externPipe(char** argv, int numpipe, int back)
 				waitpid(c1PID, &status, 0);
 			}
 		}
-		// child of fork2
+		
 		else if(c2PID == 0)
 		{
 			close(0);
@@ -301,10 +300,10 @@ char** externPipe(char** argv, int numpipe, int back)
 		}
 		
 	}
-	// in child of fork1
+	
 	else if (c1PID == 0)
 	{
-		// close stdout
+		
 		close(1);
 		dup(4);
 		close(3);
@@ -346,7 +345,7 @@ char** externPipe(char** argv, int numpipe, int back)
                 argv3 = PBackArr(argv3, argv[it]);
                 ++it;
             }
-            //TwoPipe(argv1, argv2, argv3, back, cmd);
+            
 		
 		int status;
 	int p1_to_p2[2];
@@ -357,15 +356,15 @@ char** externPipe(char** argv, int numpipe, int back)
 	
 	pid_t c1PID = fork();
 	
-	// in parent of fork 1
+	
 	if (c1PID > 0)
 	{
 		pid_t c2PID = fork();
-		//still in parent
+		
 		if (c2PID > 0)
 		{
 			pid_t c3PID = fork();
-			// still in parent
+			
 			if (c3PID > 0)
 			{
 				close(3);
@@ -377,7 +376,7 @@ char** externPipe(char** argv, int numpipe, int back)
 				waitpid(c2PID, &status, 0);
 				waitpid(c1PID, &status, 0);
 			}
-			// in child of fork 3
+			
 			else if (c3PID == 0)
 			{
 				close(0);
@@ -398,7 +397,7 @@ char** externPipe(char** argv, int numpipe, int back)
 				DisplayArgs(argv3);
 			}
 		}
-		// child of fork 2
+		
 		else if (c2PID == 0)
 		{
 			close(0);
@@ -421,7 +420,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			DisplayArgs(argv2);
 		}
 	}
-	// in child of fork 1
+	
 	else if (c1PID == 0)
 	{
 		close(1);
@@ -469,7 +468,7 @@ char** externPipe(char** argv, int numpipe, int back)
                 argv4 = PBackArr(argv4, argv[it]);
                 ++it;
             }
-            //ThreePipe(argv1, argv2, argv3, argv4, back, cmd);
+          
 		
 		int status;
 	int p1_to_p2[2];
@@ -482,22 +481,22 @@ char** externPipe(char** argv, int numpipe, int back)
 	
 	pid_t c1PID = fork();
 	
-	// inside parent
+	
 	if (c1PID > 0)
 	{
 		pid_t c2PID = fork();
 		
-		// still inside parent
+		
 		if (c2PID > 0)
 		{
 			pid_t c3PID = fork();
 			
-			// still inside parent
+			
 			if (c3PID > 0)
 			{
 				pid_t c4PID = fork();
 				
-				// still inside parent
+				
 				if (c4PID > 0)
 				{
 					close(3);
@@ -512,7 +511,7 @@ char** externPipe(char** argv, int numpipe, int back)
 					waitpid(c2PID, &status, 0);
 					waitpid(c1PID, &status, 0);
 				}
-				// inside child of fork 4
+				
 				else if (c4PID == 0)
 				{
 					close(0);
@@ -535,7 +534,7 @@ char** externPipe(char** argv, int numpipe, int back)
 					DisplayArgs(argv4);
 				}
 			}
-			// inside child of fork 3
+			
 			else if (c3PID == 0)
 			{
 				close(0);
@@ -560,7 +559,7 @@ char** externPipe(char** argv, int numpipe, int back)
 				DisplayArgs(argv3);
 			}
 		}
-		// inside child of fork 2
+		
 		else if (c2PID == 0)
 		{
 			close(0);
@@ -585,7 +584,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			DisplayArgs(argv2);
 		}
 	}
-	// inside child of fork 1
+	
 	else if (c1PID == 0)
 	{
 		close(1);
