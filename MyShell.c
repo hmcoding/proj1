@@ -269,7 +269,7 @@ char** externPipe(char** argv, int numpipe, int back)
 		
 		switch(checkZero(child2))
 		{
-		//if (child2 > 0)
+		
 			case 1:
 		{
 			close(3);
@@ -288,7 +288,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			break;
 		}
 		
-		//else if(child2 == 0)
+		
 			case 2:
 		{
 			close(0);
@@ -301,7 +301,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			DisplayArgs(argv2);
 			break;
 		}
-		//else
+		
 			case 0:
 		{
 			printf("Fork failed for one pipe: \n");
