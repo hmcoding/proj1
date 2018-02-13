@@ -1,4 +1,4 @@
-#include "background.h"
+#include "MyProcesses.h"
 
 extern struct beginPro* process_queue[];
 
