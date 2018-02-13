@@ -14,8 +14,8 @@ void startMyShell()
 
 		checkQueue();
 		displayPrompt();
-		str = ReadInput();
-		argv = ParseInput(str);
+		str = grabIn();
+		argv = parseIn(str);
 		
 		if ((argv[0] == NULL) || errorsPipeIO(argv) || errorsBackground(argv))
 		{
