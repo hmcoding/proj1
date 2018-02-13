@@ -467,12 +467,7 @@ int errorsBackground(char** argv)
 	int outp = StringCheck(argv, ">");
 	int thepipe = StringCheck(argv, "|");
 	int theback = StringCheck(argv, "&");
-	/*
-	if (theback == -1)
-	{
-		return 0;
-	}
-	*/
+	
 	
 	switch(theback){
 		case -1:
@@ -481,7 +476,7 @@ int errorsBackground(char** argv)
 	}
 	
 	
-	// if not < > or |, no error
+	
 	if ((inp == -1) &&
 		(outp == -1) &&
 		(thepipe == -1))
@@ -490,54 +485,52 @@ int errorsBackground(char** argv)
 	}
 	else
 	{
-		if (inp != -1)
-		//switch(inp)
+		
+		switch(inp)
 		{
-			/*
+			
 			case -1:
 				break;
 			default:
-			{*/
-			// & neighbors <
+			{
+			
 			if (inp - 1 == theback || inp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
-			//break;
-			//}
+			break;
+			}
 		}
-		if (outp != -1)
-		//switch(outp)
+		
+		switch(outp)
 		{
-			/*case -1:
+			case -1:
 				break;
 			default:
-			{*/
-			// & neighbors >
+			{
 			if (outp - 1 == theback || outp + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
-			//break;
-			//}
+			break;
+			}
 		}
-		if (thepipe != -1)
-		//switch(thepipe)
-		{/*
+		
+		switch(thepipe)
+		{
 			case -1:
 				break;
 			default:
-			{*/
-			// & neighbors |
+			{
 			if (thepipe - 1 == theback || thepipe + 1 == theback)
 			{
 				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
-			//break;
-			//}
+			break;
+			}
 		}
 	}
 	return 0;
