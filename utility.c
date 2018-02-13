@@ -174,9 +174,10 @@ int CmdCheck(char** args, int a)
 
 	size_t obj = 0;
 	char* temp = cmdsInclude[obj];
-
+	
 	while (temp != NULL)
 	{
+		printf("h\n");
 		if (strcmp(args[obj], temp) == 0)
 		{
 			return 3;
