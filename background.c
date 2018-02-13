@@ -20,8 +20,10 @@ void handleQueue(struct beginPro* p)
 	// find first available slot
 	while(i < PQUEUE_SIZE)
 	{
+		printf("HERE\n");
 		if(checkNull(process_queue[i]))
                 {
+			printf("LON\n");
                         process_queue[i] = p;
                         displayProStart(process_queue[i], i);
                         break;
