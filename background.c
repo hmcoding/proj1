@@ -81,15 +81,15 @@ void exitQueue()
 void remPro(int index)
 {
 	
-	if (index >= 0)
+	if (index >= 0 && index < PQUEUE_SIZE)
 	{
-	  if( index < PQUEUE_SIZE)
+	  //if( index < PQUEUE_SIZE)
 		if (!checkNull(process_queue[index]))
 		{
 			displayProStart(process_queue[index], index);
 			spacePro(process_queue[index]);
 			process_queue[index] = NULL;
-			break;
+			
 		}
 	}
 }
