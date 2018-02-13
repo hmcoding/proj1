@@ -257,6 +257,7 @@ char** getPaths(char** args)
 			  }
 				break;
 			}
+		}
 	}
 	
 		
