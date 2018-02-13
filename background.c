@@ -86,10 +86,10 @@ void remPro(int index)
 	  if( index < PQUEUE_SIZE)
 		if (!checkNull(process_queue[index]))
 		{
-			displayProStart(process_queue[index], index);
+			displayProDone(process_queue[index], index);
 			spacePro(process_queue[index]);
 			process_queue[index] = NULL;
-			printf("done\n");
+			
 			
 		}
 	}
