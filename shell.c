@@ -253,7 +253,7 @@ char** externPipe(char** argv, int numpipe, int back)
                 ++it;
             }
 		
-		int status;
+		int now;
 	int p1_to_p2[2];
 	pipe(p1_to_p2);
 	
@@ -271,14 +271,14 @@ char** externPipe(char** argv, int numpipe, int back)
 			close(4);
 			if (back != -1)
 			{
-				waitpid(c2PID, &status, WNOHANG);
-				waitpid(c1PID, &status, WNOHANG);
+				waitpid(c2PID, &now, WNOHANG);
+				waitpid(c1PID, &now, WNOHANG);
 				handleQueue(newPro(c1PID, c2PID, cmd));
 			}
 			else
 			{
-				waitpid(c2PID, &status, 0);
-				waitpid(c1PID, &status, 0);
+				waitpid(c2PID, &now, 0);
+				waitpid(c1PID, &now, 0);
 			}
 		}
 		
@@ -347,7 +347,7 @@ char** externPipe(char** argv, int numpipe, int back)
             }
             
 		
-		int status;
+		int now;
 	int p1_to_p2[2];
 	int p2_to_p3[2];
 	
@@ -372,9 +372,9 @@ char** externPipe(char** argv, int numpipe, int back)
 				close(5);
 				close(6);
 				
-				waitpid(c3PID, &status, 0);
-				waitpid(c2PID, &status, 0);
-				waitpid(c1PID, &status, 0);
+				waitpid(c3PID, &now, 0);
+				waitpid(c2PID, &now, 0);
+				waitpid(c1PID, &now, 0);
 			}
 			
 			else if (c3PID == 0)
@@ -470,7 +470,7 @@ char** externPipe(char** argv, int numpipe, int back)
             }
           
 		
-		int status;
+		int now;
 	int p1_to_p2[2];
 	int p2_to_p3[2];
 	int p3_to_p4[2];
@@ -506,10 +506,10 @@ char** externPipe(char** argv, int numpipe, int back)
 					close(7);
 					close(8);
 					
-					waitpid(c4PID, &status, 0);
-					waitpid(c3PID, &status, 0);
-					waitpid(c2PID, &status, 0);
-					waitpid(c1PID, &status, 0);
+					waitpid(c4PID, &now, 0);
+					waitpid(c3PID, &now, 0);
+					waitpid(c2PID, &now, 0);
+					waitpid(c1PID, &now, 0);
 				}
 				
 				else if (c4PID == 0)
