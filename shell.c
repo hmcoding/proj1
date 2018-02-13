@@ -39,23 +39,6 @@ void startMyShell()
 			else
 				printf("There are too many arguments\n");
 			
-			/*
-
-			if (GetSize(argv) <= 2)
-			{
-				if (GetSize(argv) == 2){
-					dirChange(argv[1]);
-				}
-				else
-					dirChange(getenv("HOME"));
-
-			}
-
-			else
-			{
-				printf("Too many arguments...\n");
-			}
-			*/
 
 		}
 
@@ -79,30 +62,30 @@ void startMyShell()
 		}
 		else if (ExecCheck(argv[0]))
 		{
-			int background = StringCheck(argv, "&");
-			int I_loc = StringCheck(argv, "<");
-			int O_loc = StringCheck(argv, ">");
-			int pipe_count = CountStr(argv, "|");
-			if (I_loc != -1)
+			int back = StringCheck(argv, "&");
+			int inp = StringCheck(argv, "<");
+			int outp = StringCheck(argv, ">");
+			int numpipe = CountStr(argv, "|");
+			if (inp != -1)
 			{
-				argv = externIn(argv, I_loc, background);
+				argv = externIn(argv, inp, back);
 			}
-			else if (O_loc != -1)
+			else if (outp != -1)
 			{
-				argv = externOut(argv, O_loc, background);
+				argv = externOut(argv, outp, back);
 			}
-			else if (pipe_count > 0)
+			else if (numpipe > 0)
 			{
-				argv = externPipe(argv, pipe_count, background);
+				argv = externPipe(argv, numpipe, back);
 			}
 			else
 			{
 				char* cmd = Convert(argv);
-				if (background != -1)
+				if (back != -1)
 				{
-					argv = RemoveArr(argv, background);
+					argv = RemoveArr(argv, back);
 				}
-				theExtern(argv, background, cmd);
+				theExtern(argv, back, cmd);
 				free(cmd);
 			}
 		}
@@ -116,8 +99,8 @@ void startMyShell()
 void dirChange(const char* dir)
 {
 
-	int ret = chdir(dir);
-	switch(ret){
+	int ans = chdir(dir);
+	switch(ans){
 	case 0:
 	{
 		setenv("PWD", dir, 1);
@@ -134,7 +117,7 @@ void dirChange(const char* dir)
 
 
 
-void theExtern(char** argv, int background, char* cmd)
+void theExtern(char** argv, int back, char* cmd)
 {
 	int status;
 	pid_t pid = fork();
@@ -142,14 +125,14 @@ void theExtern(char** argv, int background, char* cmd)
 	switch(pid){
 	case -1:
 	{
-		printf("Error on fork\n");
+		printf("Fork is causing an error\n");
 		exit(1);
 		break;
 	}
 	case 0:
 	{
 		execv(argv[0], argv);
-		printf("Trouble executing: \n");
+		printf("Not able to execute: \n");
 		DisplayArgs(argv);
 		exit(1);
 		break;
@@ -157,7 +140,7 @@ void theExtern(char** argv, int background, char* cmd)
 	default:
 	{
 		
-		switch(background){
+		switch(back){
 		default:
 		{
 			
@@ -180,59 +163,59 @@ void theExtern(char** argv, int background, char* cmd)
 	}
 }
 
-char** externIn(char** argv, int I_loc, int background)
+char** externIn(char** argv, int inp, int back)
 {
-	char* filename = (char*)calloc(strlen(argv[I_loc+1])+1, sizeof(char));
-	strcpy(filename, argv[I_loc+1]);
+	char* filename = (char*)calloc(strlen(argv[inp+1])+1, sizeof(char));
+	strcpy(filename, argv[inp+1]);
 
-	argv = RemoveArr(argv, I_loc);
-	argv = RemoveArr(argv, I_loc);
+	argv = RemoveArr(argv, inp);
+	argv = RemoveArr(argv, inp);
 				
 	// update background iterator
-	background = StringCheck(argv, "&");
+	back = StringCheck(argv, "&");
 	char* cmd = Convert(argv);
-	if (background != -1)
+	if (back != -1)
 	{
-		argv = RemoveArr(argv, background);
+		argv = RemoveArr(argv, back);
 	}
-	handleIO(argv, 1, filename, background, cmd);
+	handleIO(argv, 1, filename, back, cmd);
 	free(filename);
 	free(cmd);
 	
 	return argv;
 }
 
-char** externOut(char** argv, int O_loc, int background)
+char** externOut(char** argv, int outp, int back)
 {
-	char* filename = (char*)calloc(strlen(argv[O_loc+1])+1, sizeof(char));
-	strcpy(filename, argv[O_loc+1]);
+	char* filename = (char*)calloc(strlen(argv[outp+1])+1, sizeof(char));
+	strcpy(filename, argv[outp+1]);
 
-	argv = RemoveArr(argv, O_loc);
-	argv = RemoveArr(argv, O_loc);
+	argv = RemoveArr(argv, outp);
+	argv = RemoveArr(argv, outp);
 			
 	// update background iterator
-	background = StringCheck(argv, "&");
+	back = StringCheck(argv, "&");
 	char* cmd = Convert(argv);
-	if (background != -1)
+	if (back != -1)
 	{
-		argv = RemoveArr(argv, background);
+		argv = RemoveArr(argv, back);
 	}
-	handleIO(argv, 0, filename, background, cmd);
+	handleIO(argv, 0, filename, back, cmd);
 	free(filename);
 	free(cmd);
 	
 	return argv;
 }
 
-char** externPipe(char** argv, int pipe_count, int background)
+char** externPipe(char** argv, int numpipe, int back)
 {
 	char* cmd = Convert(argv);
-	if (background != -1)
+	if (back != -1)
 	{
-		argv = RemoveArr(argv, background);
+		argv = RemoveArr(argv, back);
 	}
 
-	if (pipe_count == 1 || pipe_count == 2 || pipe_count == 3)
+	if (numpipe == 1 || numpipe == 2 || numpipe == 3)
 {
     char** argv1 = (char**)calloc(1, sizeof(char*));
     char** argv2 = (char**)calloc(1, sizeof(char*));
@@ -249,18 +232,18 @@ char** externPipe(char** argv, int pipe_count, int background)
         ++it;
     }
     ++it;
-        if (pipe_count == 1)
+        if (numpipe == 1)
         {
             while(argv[it] != NULL)
             {
                 argv2 = PBackArr(argv2, argv[it]);
                 ++it;
             }
-            OnePipe(argv1, argv2, background, cmd);
+            OnePipe(argv1, argv2, back, cmd);
             MemFunc(argv1);
             MemFunc(argv2);
         }
-        else if (pipe_count == 2 )
+        else if (numpipe == 2 )
         {
             while(strcmp(argv[it], "|") != 0)
             {
@@ -273,12 +256,12 @@ char** externPipe(char** argv, int pipe_count, int background)
                 argv3 = PBackArr(argv3, argv[it]);
                 ++it;
             }
-            TwoPipe(argv1, argv2, argv3, background, cmd);
+            TwoPipe(argv1, argv2, argv3, back, cmd);
             MemFunc(argv1);
             MemFunc(argv2);
             MemFunc(argv3);
         }
-        else if (pipe_count == 3)
+        else if (numpipe == 3)
         {
             while(strcmp(argv[it], "|") != 0)
             {
@@ -297,7 +280,7 @@ char** externPipe(char** argv, int pipe_count, int background)
                 argv4 = PBackArr(argv4, argv[it]);
                 ++it;
             }
-            ThreePipe(argv1, argv2, argv3, argv4, background, cmd);
+            ThreePipe(argv1, argv2, argv3, argv4, back, cmd);
             MemFunc(argv1);
             MemFunc(argv2);
             MemFunc(argv3);
@@ -313,7 +296,7 @@ char** externPipe(char** argv, int pipe_count, int background)
 
 }
 
-void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
+void handleIO(char** argv, int dir, char* filename, int back, char* cmd)
 {
 	// output redirection
 	switch(dir){
@@ -323,7 +306,7 @@ void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
 		int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC, 0777);
 		if (fd == -1)
 		{
-			printf("Error. Cannot open filename: %s\n", filename);
+			printf("Cannot open the file filename: %s\n", filename);
 			exit(1);
 		}
 		pid_t pid = fork();
@@ -335,13 +318,13 @@ void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
 			dup(fd);
 			close(fd);
 			execv(argv[0], argv);
-			printf("Unknown command in handleIO\n");
+			printf("Command invalid\n");
 			exit(1);
 			break;
 		}
 		case 1:
 		{
-			switch(background){
+			switch(back){
 			default:
 			{
 				waitpid(pid, &status, WNOHANG);
@@ -359,7 +342,7 @@ void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
 		}
 		case 0:
 		{
-			printf("Fork failed in handleIO\n");
+			printf("The fork has failed.\n");
 			exit(1);
 			break;
 		}
@@ -373,7 +356,7 @@ void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
 		switch(fd){
               	  case -1:
 		  {
-			printf("Error, cannot access file in handleIO!\n");
+			printf("Cannot access file\n");
 			exit(1);
 			break;
 		  }
@@ -388,14 +371,14 @@ void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
 			close(fd);
 			execv(argv[0], argv);
 
-			printf("Unknown command in handleIO\n");
+			printf("Command invalid\n");
 			exit(1);
 			break;
 		}
 		case 1:
 		{
 		
-			switch(background){
+			switch(back){
 			default:
 			{
 				waitpid(pid, &status, WNOHANG);
@@ -413,7 +396,7 @@ void handleIO(char** argv, int dir, char* filename, int background, char* cmd)
 		}
 		case 0:
 		{
-			printf("Fork() failed in handleIO\n");
+			printf("fork() has failed\n");
 			exit(1);
 			break;
 		}
@@ -433,7 +416,7 @@ int errorsPipeIO(char** argv)
 			(StringCheck(argv, ">") != -1) ||
 			(StringCheck(argv, "|") != -1))
 		{
-			printf("Requires more than 1 argument\n");
+			printf("Need greater than 1 argument\n");
 			return 1;
 		}
 		break;
@@ -444,14 +427,14 @@ int errorsPipeIO(char** argv)
 			(StringCheck(argv, ">") == 0) ||
 			(StringCheck(argv, "|") == 0))
 		{
-			printf("Error, IO redirection or pipe cannot appear at beginning of statement\n");
+			printf("No IO redirection or pipe allowed at beginning of statement\n");
 			return 1;
 		}
 		else if ((StringCheck(argv, "<") == GetSize(argv)-1) ||
 				 (StringCheck(argv, ">") == GetSize(argv)-1) ||
 				 (StringCheck(argv, "|") == GetSize(argv)-1))
 		{
-			printf("Error, IO redirection or pipe cannot appear at end of statement\n");
+			printf("No IO redirection or pipe allowed at end of statement\n");
 			return 1;
 		}
 		break;
@@ -462,8 +445,8 @@ int errorsPipeIO(char** argv)
 
 int errorsBackground(char** argv)
 {
-	int I_loc = StringCheck(argv, "<");
-	int O_loc = StringCheck(argv, ">");
+	int inp = StringCheck(argv, "<");
+	int outp = StringCheck(argv, ">");
 	int P_loc = StringCheck(argv, "|");
 	int B_loc = StringCheck(argv, "&");
 	
@@ -473,29 +456,29 @@ int errorsBackground(char** argv)
 	}
 	
 	// if not < > or |, no error
-	if ((I_loc == -1) &&
-		(O_loc == -1) &&
+	if ((inp == -1) &&
+		(outp == -1) &&
 		(P_loc == -1))
 	{
 		return 0;
 	}
 	else
 	{
-		if (I_loc != -1)
+		if (inp != -1)
 		{
 			// & neighbors <
-			if (I_loc - 1 == B_loc || I_loc + 1 == B_loc)
+			if (inp - 1 == B_loc || inp + 1 == B_loc)
 			{
-				printf("Invalid background processing format\n");
+				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
 		}
-		if (O_loc != -1)
+		if (outp != -1)
 		{
 			// & neighbors >
-			if (O_loc - 1 == B_loc || O_loc + 1 == B_loc)
+			if (outp - 1 == B_loc || outp + 1 == B_loc)
 			{
-				printf("Invalid background processing format\n");
+				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
 		}
@@ -504,7 +487,7 @@ int errorsBackground(char** argv)
 			// & neighbors |
 			if (P_loc - 1 == B_loc || P_loc + 1 == B_loc)
 			{
-				printf("Invalid background processing format\n");
+				printf("Incorrect format for executing background processing\n");
 				return 1;
 			}
 		}
@@ -549,7 +532,7 @@ void ioCmd(char** argv)
 	case 2:
 	{
 		execv(argv[0], argv);
-		printf("Trouble executing: \n");
+		printf("Not able to execute: \n");
 		DisplayArgs(argv);
 		exit(1);
 		break;
@@ -578,7 +561,7 @@ void ioCmd(char** argv)
 	}
 	case 0:
 	{
-		printf("Fork failed in ioCmd()\n");
+		printf("Fork has failed\n");
 		exit(1);
 		break;
 	}
@@ -634,7 +617,7 @@ void etimeCmd(char** argv)
 	  case 2:
 	  {
 		execv(argv[0], argv);
-                printf("Trouble executing: \n");
+                printf("Not able to execute: \n");
                 DisplayArgs(argv);
                 exit(1);
 		break;
@@ -643,7 +626,7 @@ void etimeCmd(char** argv)
 		waitpid(childPID, &status, 0);
 		break;
 	  case 0:
-		printf("Fork failed in etimeCmd\n");
+		printf("Fork has failed\n");
 		break;
 	}
 
