@@ -72,10 +72,6 @@ char* whiteParse(char* line)
 		}
 		if (hasit == 1 && numWspace > 0)
 		{
-			/*if (numWspace > 0)
-			{
-				line = DelFunc(line, obj-numWspace-1, obj-2);
-			}*/
 			line = DelFunc(line, obj-numWspace-1, obj-2);
 			break;
 		}
@@ -99,10 +95,27 @@ char** argsParse(char* inp)
 
 	while (check != '\0')
 	{
+		/*
 		if ((check == ' ') || (check == '\n') || (check == '\t'))
 		{
 			numTok++;
+		}*/
+		
+		switch(check){
+			case ' ':
+				numTok++;
+				break;
+			case '\n':
+				numTok++;
+				break;
+			case '\t':
+				numTok++;
+				break;
 		}
+		
+		
+		
+		
 		check = inp[++obj];
 	}
 
