@@ -222,17 +222,6 @@ char** getPaths(char** args)
 				
 				if (itrArg == (itrCmd + 1))
 				{
-					/*
-					if (CharCheck(args[itrArg], '/') == 1)
-					{
-						args[itrArg] = PathMaker(args[itrArg]);
-					}
-					else
-					{
-						args[itrArg] = PathFromEVar(args[itrArg]);
-					}
-					*/
-					
 					
 					if (CharCheck(args[itrArg], '/') != 1)
 					{
@@ -254,15 +243,6 @@ char** getPaths(char** args)
 			{
 			if (itrArg == itrCmd)
 			  {
-				/*
-				if (CharCheck(args[itrArg], '/') == 1)
-				{
-					args[itrArg] = PathMaker(args[itrArg]);
-				}
-				else
-				{
-					args[itrArg] = PathFromEVar(args[itrArg]);
-				}*/
 				
 				if (CharCheck(args[itrArg], '/') != 1)
 				{
@@ -297,8 +277,11 @@ char** expandVar(char** args)
 
 		while (check != '\0')
 		{
-			if (check == '$')
+			//if (check == '$')
+			switch(check)
 			{
+				case '$':
+			  {
 				char* eVar = (char*)calloc(2, sizeof(char));
 				size_t track = 1;
 				check = args[itrArg][++itrStr];
@@ -327,9 +310,9 @@ char** expandVar(char** args)
 				
 				itrStr = itrStr + strlen(eVar);
 				free(eVar);
-			}
+			  }
 			check = args[itrArg][++itrStr];
-		}
+		  }
 		itrStr = 0;
 		++itrArg;
 	}
