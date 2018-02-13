@@ -8,6 +8,7 @@ char* grabIn()
 {
 	size_t INSIZE = 512;
 	char* inpStr = (char*)calloc(INSIZE, sizeof(char));
+	/*
 	if(fgets(inpStr, (int)INSIZE, stdin))
 	{
 		return inpStr;
@@ -15,7 +16,12 @@ char* grabIn()
 	else
 	{
 		return NULL;
-	}
+	}*/
+	
+	if(!fgets(inpStr, (int)INSIZE, stdin))
+		return NULL;
+	else
+		return inpStr;
 }
 
 char** parseIn(char* inp)
