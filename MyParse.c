@@ -6,7 +6,7 @@
 
 char* grabIn()
 {
-	size_t INSIZE = 512;
+	size_t INSIZE = 600;
 	char* inpStr = (char*)calloc(INSIZE, sizeof(char));
 	
 	if(!fgets(inpStr, (int)INSIZE, stdin))
