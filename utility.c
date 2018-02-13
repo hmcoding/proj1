@@ -7,7 +7,8 @@ void MemFunc(char** arr)
 {
 	size_t obj = 0; // store the maximum size of a theoretically possible object of any type (including array)
 	
-	while (arr[obj] != NULL)
+	//while (arr[obj] != NULL)
+	while (!checkNull(arr[obj])
 	{
 			free(arr[obj]); // free( ) deallocates the memory previously allocated by a call to calloc
 			++obj;
