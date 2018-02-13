@@ -240,51 +240,51 @@ char** getPaths(char** args)
 
 char** expandVar(char** args)
 {
-	size_t arg_it = 0;
-	size_t str_it = 0;
+	size_t itrArg = 0;
+	size_t itrStr = 0;
 	
 
-	while (args[arg_it] != NULL)
+	while (args[itrArg] != NULL)
 	{
-		char c = args[arg_it][str_it];
+		char check = args[itrArg][itrStr];
 
-		while (c != '\0')
+		while (check != '\0')
 		{
-			if (c == '$')
+			if (check == '$')
 			{
-				char* env_var = (char*)calloc(2, sizeof(char));
-				size_t count = 1;
-				c = args[arg_it][++str_it];
-				if (c == '\0' || c == '$')
+				char* eVar = (char*)calloc(2, sizeof(char));
+				size_t track = 1;
+				check = args[itrArg][++itrStr];
+				if (check == '\0' || check == '$')
 				{
-					free(env_var);
+					free(eVar);
 					
 					break;
 				}
-				env_var[0] = c;
-				env_var[1] = '\0';
-				c = args[arg_it][++str_it];
-				while (c != '/' && c != '\0' && c != '$')
+				eVar[0] = check;
+				eVar[1] = '\0';
+				check = args[itrArg][++itrStr];
+				while (check != '/' && check != '\0' && check != '$')
 				{
-					env_var = BPushString(env_var, c);
-					c = args[arg_it][++str_it];
-					count++;
+					eVar = BPushString(eVar, check);
+					check = args[itrArg][++itrStr];
+					track++;
 				}
-				char* ret_env = getenv(env_var);
-				if (ret_env == NULL)
+				char* eAns = getenv(eVar);
+				if (eAns == NULL)
 				{
-					free(env_var);
+					free(eVar);
 					break;
 				}
-				args[arg_it] = CharRep(args[arg_it], str_it - count - 1, str_it - 1, ret_env);
+				args[itrArg] = CharRep(args[itrArg], itrStr - track - 1, itrStr - 1, eAns);
 				
-				str_it = str_it + strlen(env_var);
-				free(env_var);
+				itrStr = itrStr + strlen(eVar);
+				free(eVar);
 			}
-			c = args[arg_it][++str_it];
+			check = args[itrArg][++itrStr];
 		}
-		str_it = 0;
-		++arg_it;
+		itrStr = 0;
+		++itrArg;
 	}
 
 	return args;
