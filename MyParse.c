@@ -95,12 +95,6 @@ char** argsParse(char* inp)
 
 	while (check != '\0')
 	{
-		/*
-		if ((check == ' ') || (check == '\n') || (check == '\t'))
-		{
-			numTok++;
-		}*/
-		
 		switch(check){
 			case ' ':
 				numTok++;
@@ -112,9 +106,6 @@ char** argsParse(char* inp)
 				numTok++;
 				break;
 		}
-		
-		
-		
 		
 		check = inp[++obj];
 	}
@@ -130,11 +121,14 @@ char** argsParse(char* inp)
 		ans[i] = (char*)calloc(strlen(temp)+1, sizeof(char));
 		strcpy(ans[i], temp);
 	}
-	for (i = 1; i < numTok; i++)
+	//for (i = 1; i < numTok; i++)
+	i = 1;
+	while (i < numTok)
 	{
 		temp = strtok(NULL, " \n\t");
 		ans[i] = (char*)calloc(strlen(temp)+1, sizeof(char));
 		strcpy(ans[i], temp);
+		i++;
 	}
 
 	ans[i] = NULL;
