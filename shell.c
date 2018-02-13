@@ -153,13 +153,12 @@ void ExecuteExternal(char** argv, int background, char* cmd)
 		switch(background){
 		default:
 		{
-			printf("HI\n");
+			
 			waitpid(pid, &status, WNOHANG);
-			printf("YO\n");
+			
 			handleQueue(newPro(pid, -1, cmd));
-			printf("GET\n");
-			//kill(pid, SIGSTOP);
-			//Need to implement a pause here for things like text editors
+			
+			
 			break;
 		}
 		case -1:
