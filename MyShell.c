@@ -370,7 +370,7 @@ char** externPipe(char** argv, int numpipe, int back)
 	{
 		pid_t child2 = fork();
 		
-		//if (child2 > 0)
+		
 		switch(checkZero(child2))
 	  {
 			case 1:
@@ -411,7 +411,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			break;
 		}
 		
-		//else if (child2 == 0)
+		
 			case 2:
 		{
 			close(0);
@@ -429,7 +429,7 @@ char** externPipe(char** argv, int numpipe, int back)
 			DisplayArgs(argv2);
 			break;
 		}
-		//else
+		
 			case 0:
 		{
 			printf("Fork failed for two pipese: \n");
@@ -514,7 +514,10 @@ char** externPipe(char** argv, int numpipe, int back)
 		pid_t child2 = fork();
 		
 		
-		if (child2 > 0)
+		//if (child2 > 0)
+		switch(checkZero(child2))
+	  {
+			case 1:
 		{
 			pid_t child3 = fork();
 			
@@ -585,9 +588,11 @@ char** externPipe(char** argv, int numpipe, int back)
 				printf("Fork failed for three pipes: \n");
 				DisplayArgs(argv3);
 			}
+			break;
 		}
 		
-		else if (child2 == 0)
+		//else if (child2 == 0)
+			case 2:
 		{
 			close(0);
 			dup(3);
@@ -604,12 +609,15 @@ char** externPipe(char** argv, int numpipe, int back)
 			
 			printf("Fork failed for three pipes: \n");
 			DisplayArgs(argv2);
+			break;
 		}
-		else
+		//else
+			case 0:
 		{
 			printf("Fork failed for three pipes: \n");
 			DisplayArgs(argv2);
 		}
+	  }
 		break;
 	}
 	
