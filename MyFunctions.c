@@ -24,8 +24,8 @@ void DisplayArgs(char** args)
 	
 	while (args[obj] != NULL)
 	{
-			printf(args[obj]);
-			printf("\n"); 
+			printf(args[obj]"\n");
+			//printf("\n"); 
 			++obj;
 	}
 }
