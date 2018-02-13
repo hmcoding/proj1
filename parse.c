@@ -29,7 +29,7 @@ char** ParseInput(char* input)
 	{
 		if (strcmp(split_args[0], "&") == 0)
 		{
-			split_args = ArrayRemoveElement(split_args, 0);
+			split_args = RemoveArr(split_args, 0);
 		}
 	}
 	
@@ -58,7 +58,7 @@ char* ParseWhitespace(char* line)
 		whitespace_count++;
 	}
 	if (it > 0)
-		line = DeleteCharacter(line, it-whitespace_count, it-1);
+		line = DelFunc(line, it-whitespace_count, it-1);
 	
 	// check for empty string
 	//if (strcmp(line,"")==0)
@@ -91,13 +91,13 @@ char* ParseWhitespace(char* line)
 		{
 			if (whitespace_count > 0)
 			{
-				line = DeleteCharacter(line, it-whitespace_count-1, it-2);
+				line = DelFunc(line, it-whitespace_count-1, it-2);
 			}
 			break;
 		}
 		else if (whitespace_count > 1)
 		{
-			line = DeleteCharacter(line, it-whitespace_count-1, it-3);
+			line = DelFunc(line, it-whitespace_count-1, it-3);
 			// must update iterator if array is changed through deletion
 			it = it - (whitespace_count - 1);
 		}
@@ -167,11 +167,11 @@ char** ResolvePaths(char** args)
 
 	while(args[arg_it] != NULL)
 	{
-		//cur_type = IsCommand(args,arg_it);						[FIXED COMPILER WARNING UNUSED VAR]
+		//cur_type = CmdCheck(args,arg_it);						[FIXED COMPILER WARNING UNUSED VAR]
 		//printf("%s	%i\n", args[arg_it], cur_type);
 		if (new_cmd == 1)
 		{
-			cmd_type = IsCommand(args, arg_it);  
+			cmd_type = CmdCheck(args, arg_it);  
 			cur_cmd = args[arg_it];
 			cmd_it = arg_it;
 			new_cmd = 0;
@@ -196,12 +196,12 @@ char** ResolvePaths(char** args)
 
 			if (arg_it == (cmd_it + 1))
 			{
-				if (!ContainsChar(args[arg_it], '/'))
+				if (!CharCheck(args[arg_it], '/'))
 				{
-					if (!ContainsChar(args[arg_it], '~') && !ContainsChar(args[arg_it], '.'))
+					if (!CharCheck(args[arg_it], '~') && !CharCheck(args[arg_it], '.'))
 					{
-						args[arg_it] = DynStrPushFront(args[arg_it], '/');
-						args[arg_it] = DynStrPushFront(args[arg_it], '.');
+						args[arg_it] = FPushString(args[arg_it], '/');
+						args[arg_it] = FPushString(args[arg_it], '.');
 					}
 				}
 				else
@@ -210,11 +210,11 @@ char** ResolvePaths(char** args)
 						args[arg_it][0] != '.' &&
 						args[arg_it][0] != '~')
 					{
-						args[arg_it] = DynStrPushFront(args[arg_it], '/');
-						args[arg_it] = DynStrPushFront(args[arg_it], '.');
+						args[arg_it] = FPushString(args[arg_it], '/');
+						args[arg_it] = FPushString(args[arg_it], '.');
 					}
 				}
-				args[arg_it] = BuildPath(args[arg_it]);
+				args[arg_it] = PathMaker(args[arg_it]);
 			}
 
 
@@ -227,16 +227,16 @@ char** ResolvePaths(char** args)
 			{
 				if (arg_it == (cmd_it + 1))
 				{
-					if (ContainsChar(args[arg_it], '/') == 1)
+					if (CharCheck(args[arg_it], '/') == 1)
 					{
-						args[arg_it] = BuildPath(args[arg_it]);
+						args[arg_it] = PathMaker(args[arg_it]);
 					}
 					else
 					{
-						args[arg_it] = PathEnvBuildPath(args[arg_it]);
+						args[arg_it] = PathFromEVar(args[arg_it]);
 					}
 
-					//args[arg_it] = BuildPath(args[arg_it]);
+					//args[arg_it] = PathMaker(args[arg_it]);
 				}
 			}
 		}
@@ -246,13 +246,13 @@ char** ResolvePaths(char** args)
 		{
 			if (arg_it == cmd_it)
 			{
-				if (ContainsChar(args[arg_it], '/') == 1)
+				if (CharCheck(args[arg_it], '/') == 1)
 				{
-					args[arg_it] = BuildPath(args[arg_it]);
+					args[arg_it] = PathMaker(args[arg_it]);
 				}
 				else
 				{
-					args[arg_it] = PathEnvBuildPath(args[arg_it]);
+					args[arg_it] = PathFromEVar(args[arg_it]);
 				}
 			}
 		}
@@ -293,7 +293,7 @@ char** ExpandVariables(char** args)
 				c = args[arg_it][++str_it];
 				while (c != '/' && c != '\0' && c != '$')
 				{
-					env_var = DynStrPushBack(env_var, c);
+					env_var = BPushString(env_var, c);
 					c = args[arg_it][++str_it];
 					count++;
 				}
@@ -304,7 +304,7 @@ char** ExpandVariables(char** args)
 					// invalid env variable
 					break;
 				}
-				args[arg_it] = ReplaceSubStr(args[arg_it], str_it - count - 1, str_it - 1, ret_env);
+				args[arg_it] = CharRep(args[arg_it], str_it - count - 1, str_it - 1, ret_env);
 				// must update iterator since string was changed
 				str_it = str_it + strlen(env_var);
 				free(env_var);
