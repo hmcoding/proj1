@@ -231,7 +231,7 @@ char* PathMaker(char* s)
 		strcpy(pwdNew, pwd);
 		pwdNew = RmDir(pwdNew);
 		
-		//if (strcmp(pwdNew,"")==0)
+		
 		switch(strcmp(pwdNew,"")==0)
 		{
 			case 0:
@@ -263,10 +263,15 @@ char* PathMaker(char* s)
 				slash1 = 0;
 				slash2 = 0;
 				
-				if (strcmp(stringAns,"") == 0)
+				//if (strcmp(stringAns,"") == 0)
+				switch (strcmp(stringAns,""))
 				{
+					case 0:
+						{
 					stringAns = BPushString(stringAns, '/');
 					return stringAns;
+							break;
+						}
 				}
 			}
 			else if (strlen(stringAns) > 3)
