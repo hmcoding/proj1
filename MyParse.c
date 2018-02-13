@@ -8,15 +8,6 @@ char* grabIn()
 {
 	size_t INSIZE = 512;
 	char* inpStr = (char*)calloc(INSIZE, sizeof(char));
-	/*
-	if(fgets(inpStr, (int)INSIZE, stdin))
-	{
-		return inpStr;
-	}
-	else
-	{
-		return NULL;
-	}*/
 	
 	if(!fgets(inpStr, (int)INSIZE, stdin))
 		return NULL;
@@ -29,11 +20,18 @@ char** parseIn(char* inp)
 	inp = whiteParse(inp);
 	
 	char** inpArgs = argsParse(inp);
-	
+	/*
 	if (inpArgs[0] != NULL && (strcmp(inpArgs[0], "&") == 0))
 	{
 		inpArgs = RemoveArr(inpArgs, 0);
+	}*/
+	
+	if (inpArgs[0] != NULL)
+	{
+		if((strcmp(inpArgs[0], "&") == 0))
+			inpArgs = RemoveArr(inpArgs, 0);
 	}
+		
 	
 	inpArgs = expandVar(inpArgs);
 	
