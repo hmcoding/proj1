@@ -137,11 +137,14 @@ char* RmDir(char* p)
 
 	
 
-	if (c == '/' && toRem == 0)
+	//if (c == '/' && toRem == 0)
+	if (c == '/')
+	{
+		if(toRem == 0)
 		return p;
+	}
 	
 	
-	//if (c == '/')
 	switch(c)
 	{
 		case '/':
