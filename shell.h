@@ -15,44 +15,32 @@
 #include "pipe.h"
 
 
-// For each function in here
-// int background is a flag to run the process in the background (-1) for foreground
-// any value >= 0 for background
-// char* cmd is the argv formatted to be pushed into the process queue
 
-void RunShell();
+void startMyShell();
 
-void ChangeDirectory(const char* path);
+void dirChange(const char* path);
 
 
-void ExecuteExternal(char** argv, int background, char* cmd);
+void theExtern(char** argv, int background, char* cmd);
 
-char** ExecuteExternalWithInput(char** argv, int I_loc, int background);
+char** externIn(char** argv, int I_loc, int background);
 
-char** ExecuteExternalWithOutput(char** argv, int O_loc, int background);
+char** externOut(char** argv, int O_loc, int background);
 
-char** ExecuteExternalWithPipe(char** argv, int pipe_count, int background);
-
-
+char** externPipe(char** argv, int pipe_count, int background);
 
 
+void handleIO(char** argv, int dir, char* filename, int background, char* cmd);
 
+int errorsPipeIO(char** argv);
 
+int errorsBackground(char** argv);
 
-// For file IO redirection
-// dir=0 for output redirect
-// dir=1 for input redirect
-void IORedirect(char** argv, int dir, char* filename, int background, char* cmd);
+void displayPrompt();
 
-int CheckForIOandPipeErrors(char** argv);
+void ioCmd(char** argv);
 
-int CheckForBackgroundErrors(char** argv);
-
-void PrintPrompt();
-
-void Limits(char** argv);
-
-void ETime(char** argv);
+void etimeCmd(char** argv);
 
 int checkZero(int tocheck);
 
