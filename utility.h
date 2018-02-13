@@ -94,7 +94,6 @@ char* Convert(char** argv);
 // Counts the number of times a string appears in an argument vector
 int CountStr(char** argv, const char* s);
 
-bool checkNull(char ** tocheck);
 
 
 
