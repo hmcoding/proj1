@@ -183,7 +183,6 @@ char** getPaths(char** args)
 			  {
 				if (!CharCheck(args[itrArg], '/'))
 				{
-					//if (!CharCheck(args[itrArg], '~') && !CharCheck(args[itrArg], '.'))
 					if (!CharCheck(args[itrArg], '~'))
 					{
 						if (!CharCheck(args[itrArg], '.'))
@@ -195,9 +194,6 @@ char** getPaths(char** args)
 				}
 				else
 				{
-					/*if (args[itrArg][0] != '/' &&
-						args[itrArg][0] != '.' &&
-						args[itrArg][0] != '~')*/
 					if (args[itrArg][0] != '/')
 					{
 						if(args[itrArg][0] != '.')
@@ -226,6 +222,7 @@ char** getPaths(char** args)
 				
 				if (itrArg == (itrCmd + 1))
 				{
+					/*
 					if (CharCheck(args[itrArg], '/') == 1)
 					{
 						args[itrArg] = PathMaker(args[itrArg]);
@@ -233,6 +230,17 @@ char** getPaths(char** args)
 					else
 					{
 						args[itrArg] = PathFromEVar(args[itrArg]);
+					}
+					*/
+					
+					
+					if (CharCheck(args[itrArg], '/') != 1)
+					{
+						args[itrArg] = PathFromEVar(args[itrArg]);
+					}
+					else
+					{
+						args[itrArg] = PathMaker(args[itrArg]);
 					}
 
 					
@@ -246,6 +254,7 @@ char** getPaths(char** args)
 			{
 			if (itrArg == itrCmd)
 			  {
+				/*
 				if (CharCheck(args[itrArg], '/') == 1)
 				{
 					args[itrArg] = PathMaker(args[itrArg]);
@@ -253,7 +262,17 @@ char** getPaths(char** args)
 				else
 				{
 					args[itrArg] = PathFromEVar(args[itrArg]);
+				}*/
+				
+				if (CharCheck(args[itrArg], '/') != 1)
+				{
+					args[itrArg] = PathFromEVar(args[itrArg]);
 				}
+				else
+				{
+					args[itrArg] = PathMaker(args[itrArg]);
+				}
+				
 			  }
 				break;
 			}
