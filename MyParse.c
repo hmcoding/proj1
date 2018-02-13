@@ -121,7 +121,6 @@ char** argsParse(char* inp)
 		ans[i] = (char*)calloc(strlen(temp)+1, sizeof(char));
 		strcpy(ans[i], temp);
 	}
-	//for (i = 1; i < numTok; i++)
 	i = 1;
 	while (i < numTok)
 	{
@@ -149,15 +148,18 @@ char** getPaths(char** args)
 	while(args[itrArg] != NULL)
 	{
 		
-		if (new == 1)
-		{
+		//if (new == 1)
+		switch(new){
+			case 1:
+			{
 			whatCmd = CmdCheck(args, itrArg);  
 			cmd = args[itrArg];
 			itrCmd = itrArg;
 			new = 0;
-		}
-		else
-		{
+			break;
+			}
+			default:
+			{
 			if ((strcmp(args[itrArg], "|") == 0) || 
 			    (strcmp(args[itrArg], "<") == 0) ||
 			    (strcmp(args[itrArg], ">") == 0))
@@ -166,6 +168,8 @@ char** getPaths(char** args)
 				++itrArg;
 				continue;
 			    }
+				break;
+			}
 		}
 		
 		// cd
