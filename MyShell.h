@@ -1,5 +1,5 @@
-#ifndef _SHELL_H
-#define _SHELL_H
+#ifndef _MYSHELL_H
+#define _MYSHELL_H
 #include<string.h>
 #include<stdio.h>
 #include<stdlib.h>
@@ -11,8 +11,8 @@
 #include <errno.h>
 #include "utility.h"
 #include "parse.h"
-#include "background.h"
-//#include "pipe.h"
+#include "MyProcesses.h"
+
 
 
 
