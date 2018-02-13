@@ -223,10 +223,10 @@ char** ResolvePaths(char** args)
 		// etime and limits
 		else if (cmd_type == 3)
 		{
-			printf("HI\n");
+			
 			if ((strcmp(cur_cmd, "etime") == 0) || (strcmp(cur_cmd, "io") == 0))
 			{
-				printf("HI\n");
+				
 				if (arg_it == (cmd_it + 1))
 				{
 					if (CharCheck(args[arg_it], '/') == 1)
