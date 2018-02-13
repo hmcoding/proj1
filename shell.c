@@ -10,7 +10,7 @@ void RunShell()
 	Init();
 	while (running)
 	{
-		//KillZombies();
+		
 
 		checkQueue();
 		PrintPrompt();
@@ -25,6 +25,7 @@ void RunShell()
 		{
 			MemFunc(argv);
 			printf("Exiting Shell...\n");
+			KillZombies();
 			exitQueue();
 			exit(0);
 		}
