@@ -311,8 +311,9 @@ char** expandVar(char** args)
 				itrStr = itrStr + strlen(eVar);
 				free(eVar);
 			  }
-			check = args[itrArg][++itrStr];
 			}
+			check = args[itrArg][++itrStr];
+			
 		  }
 		itrStr = 0;
 		++itrArg;
