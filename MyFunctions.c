@@ -301,23 +301,6 @@ char* PathMaker(char* s)
 		return stringAns;
 
 	
-	if (stringAns[0] == '~')
-	{
-		stringAns = CharRep(stringAns, 0, 0, getenv("HOME")); 
-	}
-
-	
-	if (stringAns[0] == '.' && stringAns[1] != '.')
-	{
-		
-		if (strcmp(getenv("PWD"), "/") == 0)
-			stringAns = CharRep(stringAns, 0, 1, getenv("PWD"));
-		
-		else
-			stringAns = CharRep(stringAns, 0, 0, getenv("PWD"));
-	}
-
-	
 	if (stringAns[0] == '.' && stringAns[1] == '.')
 	{
 		char* pwd = getenv("PWD");
@@ -338,6 +321,24 @@ char* PathMaker(char* s)
 		}
 		stringAns = CharRep(stringAns, 0, 1, pwdNew);
 		free(pwdNew);
+	}
+
+	
+	if (stringAns[0] == '.' && stringAns[1] != '.')
+	{
+		
+		if (strcmp(getenv("PWD"), "/") == 0)
+			stringAns = CharRep(stringAns, 0, 1, getenv("PWD"));
+		
+		else
+			stringAns = CharRep(stringAns, 0, 0, getenv("PWD"));
+	}
+
+	
+	
+	if (stringAns[0] == '~')
+	{
+		stringAns = CharRep(stringAns, 0, 0, getenv("HOME")); 
 	}
 
 	
