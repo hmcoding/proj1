@@ -317,10 +317,20 @@ void handleIO(char** argv, int directory, char* filename, int back, char* cmd)
 	{
 		int now;
 		int fIO = open(filename, O_CREAT|O_WRONLY|O_TRUNC, 0777);
+		/*
 		if (fIO == -1)
 		{
 			printf("Cannot open the file filename: %s\n", filename);
 			exit(1);
+		}*/
+		
+		switch(fIO){
+			case -1:
+				printf("Cannot open the file filename: %s\n", filename);
+				exit(1);
+				break;
+			default:
+				break;
 		}
 		pid_t pid = fork();
 
