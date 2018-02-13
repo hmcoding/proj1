@@ -29,6 +29,7 @@ MyProcesses.c
 MyProcesses.h
 MyShell.c
 MyShell.h
+main.c
 
 
 Completed using: linprog
