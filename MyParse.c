@@ -6,11 +6,11 @@
 
 char* grabIn()
 {
-	size_t BUFFER_SIZE = 512;
-	char* input_string = (char*)calloc(BUFFER_SIZE, sizeof(char));
-	if(fgets(input_string, (int)BUFFER_SIZE, stdin))
+	size_t INSIZE = 512;
+	char* inpStr = (char*)calloc(INSIZE, sizeof(char));
+	if(fgets(inpStr, (int)INSIZE, stdin))
 	{
-		return input_string;
+		return inpStr;
 	}
 	else
 	{
@@ -22,25 +22,24 @@ char** parseIn(char* inp)
 {
 	inp = whiteParse(inp);
 	
-	char** split_args = argsParse(inp);
+	char** inpArgs = argsParse(inp);
 	
-	if (split_args[0] != NULL)
+	if (inpArgs[0] != NULL && (strcmp(inpArgs[0], "&") == 0))
 	{
-		if (strcmp(split_args[0], "&") == 0)
+		/*if (strcmp(inpArgs[0], "&") == 0)
 		{
-			split_args = RemoveArr(split_args, 0);
-		}
+			inpArgs = RemoveArr(inpArgs, 0);
+		}*/
+		inpArgs = RemoveArr(inpArgs, 0);
 	}
 	
-	split_args = expandVar(split_args);
+	inpArgs = expandVar(inpArgs);
 	
-	split_args = getPaths(split_args);
-	
-	
+	inpArgs = getPaths(inpArgs);
 	
 	free(inp);
 	
-	return split_args;
+	return inpArgs;
 }
 
 char* whiteParse(char* line)
