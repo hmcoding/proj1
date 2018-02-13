@@ -14,13 +14,13 @@ void DisplayArgs(char** args);
 // DeleteCharacter
 // Deletes a series of characters from a dynamic character array
 // The start and end iterations are inclusive
-char* DelFunc(char* line, size_t begin, size_t end);
+char* DelFunc(char* line, size_t start, size_t end);
 
 // FileExist
-int ExistCheck(const char* file);
+int ExistCheck(const char* filename);
 
 // IsExecutable
-int ExecCheck(const char* file);
+int ExecCheck(const char* filename);
 
 // DynStrCat
 // This function frees dest and returns the new
@@ -61,7 +61,7 @@ char* PathClear(char* s);
 // ReplaceSubStr
 // Replaces the characters between iterators start and end (inclusive), with
 // the string contained in source
-char* CharRep(char* x, size_t begin, size_t end, const char* y);
+char* CharRep(char* x, size_t start, size_t end, const char* y);
 
 // ContainsChar
 // Checks if a string contains a character
