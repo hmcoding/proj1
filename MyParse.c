@@ -26,10 +26,6 @@ char** parseIn(char* inp)
 	
 	if (inpArgs[0] != NULL && (strcmp(inpArgs[0], "&") == 0))
 	{
-		/*if (strcmp(inpArgs[0], "&") == 0)
-		{
-			inpArgs = RemoveArr(inpArgs, 0);
-		}*/
 		inpArgs = RemoveArr(inpArgs, 0);
 	}
 	
@@ -44,51 +40,51 @@ char** parseIn(char* inp)
 
 char* whiteParse(char* line)
 {
-	size_t it = 0;
-	int whitespace_count = 0;
-	char cur_char = line[it];
+	size_t obj = 0;
+	int numWspace = 0;
+	char theChar = line[obj];
 	
-	while (cur_char != '\0' && (cur_char == ' ' || cur_char == '\t' || cur_char == '\n'))
+	while (theChar != '\0' && (theChar == ' ' || theChar == '\t' || theChar == '\n'))
 	{
-		cur_char = line[++it];
-		whitespace_count++;
+		theChar = line[++obj];
+		numWspace++;
 	}
-	if (it > 0)
-		line = DelFunc(line, it-whitespace_count, it-1);
+	if (obj > 0)
+		line = DelFunc(line, obj-numWspace, obj-1);
 	
 	
 	
-	it = 0;
-	whitespace_count = 0;
+	obj = 0;
+	numWspace = 0;
 	
 	
-	int contains_trailing = 0;
+	int hasit = 0;
 	
-	while (cur_char != '\0')
+	while (theChar != '\0')
 	{
-		cur_char = line[it++];
-		while (cur_char == ' ' || cur_char == '\t' || cur_char == '\n')
+		theChar = line[obj++];
+		while (theChar == ' ' || theChar == '\t' || theChar == '\n')
 		{
-			whitespace_count++;
-			cur_char = line[it++];
-			if (cur_char == '\0')
-				contains_trailing = 1;
+			numWspace++;
+			theChar = line[obj++];
+			if (theChar == '\0')
+				hasit = 1;
 		}
-		if (contains_trailing == 1)
+		if (hasit == 1)
 		{
-			if (whitespace_count > 0)
+			if (numWspace > 0)
 			{
-				line = DelFunc(line, it-whitespace_count-1, it-2);
+				line = DelFunc(line, obj-numWspace-1, obj-2);
 			}
 			break;
 		}
-		else if (whitespace_count > 1)
+		else if (numWspace > 1)
 		{
-			line = DelFunc(line, it-whitespace_count-1, it-3);
-			// must update iterator if array is changed through deletion
-			it = it - (whitespace_count - 1);
+			line = DelFunc(line, obj-numWspace-1, obj-3);
+			
+			obj = obj - (numWspace - 1);
 		}
-		whitespace_count = 0;
+		numWspace = 0;
 	}
 	
 	return line;
@@ -96,121 +92,122 @@ char* whiteParse(char* line)
 
 char** argsParse(char* inp)
 {
-	size_t it = 0;
-	char c = inp[it];
-	int token_count = 1;
+	size_t obj = 0;
+	char check = inp[obj];
+	int numTok = 1;
 
-	while (c != '\0')
+	while (check != '\0')
 	{
-		if ((c == ' ') || (c == '\n') || (c == '\t'))
+		if ((check == ' ') || (check == '\n') || (check == '\t'))
 		{
-			token_count++;
+			numTok++;
 		}
-		c = inp[++it];
+		check = inp[++obj];
 	}
 
 	int i = 0;
 
-	char** ret = (char**)calloc(token_count + 1, sizeof(char*));
+	char** ans = (char**)calloc(numTok + 1, sizeof(char*));
 
-	char* tmp = strtok(inp, " \n\t");
+	char* temp = strtok(inp, " \n\t");
 
-	if (tmp != NULL)
+	if (temp != NULL)
 	{
-		ret[i] = (char*)calloc(strlen(tmp)+1, sizeof(char));
-		strcpy(ret[i], tmp);
+		ans[i] = (char*)calloc(strlen(temp)+1, sizeof(char));
+		strcpy(ans[i], temp);
 	}
-	for (i = 1; i < token_count; i++)
+	for (i = 1; i < numTok; i++)
 	{
-		tmp = strtok(NULL, " \n\t");
-		ret[i] = (char*)calloc(strlen(tmp)+1, sizeof(char));
-		strcpy(ret[i], tmp);
+		temp = strtok(NULL, " \n\t");
+		ans[i] = (char*)calloc(strlen(temp)+1, sizeof(char));
+		strcpy(ans[i], temp);
 	}
 
-	ret[i] = NULL;
+	ans[i] = NULL;
 
-	return ret;
+	return ans;
 }
 
 char** getPaths(char** args)
 {
-	int arg_it = 0;		
-	int cmd_type = 0;	
-	int cmd_it = 0;		
-	int new_cmd = 1;	
-	char* cur_cmd = args[0];
+	int itrArg = 0;		
+	int whatCmd = 0;	
+	int itrCmd = 0;		
+	int new = 1;	
+	char* cmd;
+	cmd = args[0];
 
 
-	while(args[arg_it] != NULL)
+	while(args[itrArg] != NULL)
 	{
 		
-		if (new_cmd == 1)
+		if (new == 1)
 		{
-			cmd_type = CmdCheck(args, arg_it);  
-			cur_cmd = args[arg_it];
-			cmd_it = arg_it;
-			new_cmd = 0;
+			whatCmd = CmdCheck(args, itrArg);  
+			cmd = args[itrArg];
+			itrCmd = itrArg;
+			new = 0;
 		}
 		else
 		{
-			if ((strcmp(args[arg_it], "|") == 0) || 
-			    (strcmp(args[arg_it], "<") == 0) ||
-			    (strcmp(args[arg_it], ">") == 0))
+			if ((strcmp(args[itrArg], "|") == 0) || 
+			    (strcmp(args[itrArg], "<") == 0) ||
+			    (strcmp(args[itrArg], ">") == 0))
 			    {
-				new_cmd = 1;
-				++arg_it;
+				new = 1;
+				++itrArg;
 				continue;
 			    }
 		}
 		
 		// cd
-		if (cmd_type == 2)
+		if (whatCmd == 2)
 		{
 			
 
 
-			if (arg_it == (cmd_it + 1))
+			if (itrArg == (itrCmd + 1))
 			{
-				if (!CharCheck(args[arg_it], '/'))
+				if (!CharCheck(args[itrArg], '/'))
 				{
-					if (!CharCheck(args[arg_it], '~') && !CharCheck(args[arg_it], '.'))
+					if (!CharCheck(args[itrArg], '~') && !CharCheck(args[itrArg], '.'))
 					{
-						args[arg_it] = FPushString(args[arg_it], '/');
-						args[arg_it] = FPushString(args[arg_it], '.');
+						args[itrArg] = FPushString(args[itrArg], '/');
+						args[itrArg] = FPushString(args[itrArg], '.');
 					}
 				}
 				else
 				{
-					if (args[arg_it][0] != '/' &&
-						args[arg_it][0] != '.' &&
-						args[arg_it][0] != '~')
+					if (args[itrArg][0] != '/' &&
+						args[itrArg][0] != '.' &&
+						args[itrArg][0] != '~')
 					{
-						args[arg_it] = FPushString(args[arg_it], '/');
-						args[arg_it] = FPushString(args[arg_it], '.');
+						args[itrArg] = FPushString(args[itrArg], '/');
+						args[itrArg] = FPushString(args[itrArg], '.');
 					}
 				}
-				args[arg_it] = PathMaker(args[arg_it]);
+				args[itrArg] = PathMaker(args[itrArg]);
 			}
 
 
 		}
 
 		
-		else if (cmd_type == 3)
+		else if (whatCmd == 3)
 		{
 			
-			if ((strcmp(cur_cmd, "etime") == 0) || (strcmp(cur_cmd, "io") == 0))
+			if ((strcmp(cmd, "etime") == 0) || (strcmp(cmd, "io") == 0))
 			{
 				
-				if (arg_it == (cmd_it + 1))
+				if (itrArg == (itrCmd + 1))
 				{
-					if (CharCheck(args[arg_it], '/') == 1)
+					if (CharCheck(args[itrArg], '/') == 1)
 					{
-						args[arg_it] = PathMaker(args[arg_it]);
+						args[itrArg] = PathMaker(args[itrArg]);
 					}
 					else
 					{
-						args[arg_it] = PathFromEVar(args[arg_it]);
+						args[itrArg] = PathFromEVar(args[itrArg]);
 					}
 
 					
@@ -219,23 +216,23 @@ char** getPaths(char** args)
 		}
 
 		
-		else if (cmd_type == 1)
+		else if (whatCmd == 1)
 		{
-			if (arg_it == cmd_it)
+			if (itrArg == itrCmd)
 			{
-				if (CharCheck(args[arg_it], '/') == 1)
+				if (CharCheck(args[itrArg], '/') == 1)
 				{
-					args[arg_it] = PathMaker(args[arg_it]);
+					args[itrArg] = PathMaker(args[itrArg]);
 				}
 				else
 				{
-					args[arg_it] = PathFromEVar(args[arg_it]);
+					args[itrArg] = PathFromEVar(args[itrArg]);
 				}
 			}
 		}
 	
 		
-		++arg_it;
+		++itrArg;
 	}
 
 	return args;
