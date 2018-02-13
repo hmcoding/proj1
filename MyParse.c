@@ -184,7 +184,7 @@ char** getPaths(char** args)
 				if (!CharCheck(args[itrArg], '/'))
 				{
 					//if (!CharCheck(args[itrArg], '~') && !CharCheck(args[itrArg], '.'))
-					if (!CharCheck(args[itrArg], '~')
+					if (!CharCheck(args[itrArg], '~'))
 					{
 						if (!CharCheck(args[itrArg], '.'))
 						{
