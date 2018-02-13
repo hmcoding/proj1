@@ -26,7 +26,9 @@ void handleQueue(struct beginPro* p)
 			printf("LON\n");
                         process_queue[i] = p;
                         displayProStart(process_queue[i], i);
+			
                         break;
+			
                 }
 
 		i++;
@@ -87,6 +89,7 @@ void remPro(int index)
 			displayProStart(process_queue[index], index);
 			spacePro(process_queue[index]);
 			process_queue[index] = NULL;
+			break;
 		}
 	}
 }
