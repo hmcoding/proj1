@@ -1,6 +1,6 @@
 // Header to outline all tasks related to parsing
-#ifndef _PARSE_H
-#define _PARSE_H
+#ifndef _MYPARSE_H
+#define _MYPARSE_H
 
 // ReadInput
 // Grabs the input from the user and returns it as a dynamic character array
