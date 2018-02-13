@@ -130,6 +130,7 @@ void ExecuteExternal(char** argv, int background, char* cmd)
 {
 	int status;
 	pid_t pid = fork();
+	printf("%d:", pid);
 	switch(pid){
 	case -1:
 	{
