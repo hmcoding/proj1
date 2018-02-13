@@ -20,9 +20,9 @@ char* grabIn()
 
 char** parseIn(char* inp)
 {
-	input = whiteParse(input);
+	inp = whiteParse(inp);
 	
-	char** split_args = argsParse(input);
+	char** split_args = argsParse(inp);
 	
 	if (split_args[0] != NULL)
 	{
@@ -38,7 +38,7 @@ char** parseIn(char* inp)
 	
 	
 	
-	free(input);
+	free(inp);
 	
 	return split_args;
 }
@@ -98,7 +98,7 @@ char* whiteParse(char* line)
 char** argsParse(char* inp)
 {
 	size_t it = 0;
-	char c = input[it];
+	char c = inp[it];
 	int token_count = 1;
 
 	while (c != '\0')
@@ -107,14 +107,14 @@ char** argsParse(char* inp)
 		{
 			token_count++;
 		}
-		c = input[++it];
+		c = inp[++it];
 	}
 
 	int i = 0;
 
 	char** ret = (char**)calloc(token_count + 1, sizeof(char*));
 
-	char* tmp = strtok(input, " \n\t");
+	char* tmp = strtok(inp, " \n\t");
 
 	if (tmp != NULL)
 	{
