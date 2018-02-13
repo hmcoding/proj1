@@ -70,12 +70,13 @@ char* whiteParse(char* line)
 			if (theChar == '\0')
 				hasit = 1;
 		}
-		if (hasit == 1)
+		if (hasit == 1 && numWspace > 0)
 		{
-			if (numWspace > 0)
+			/*if (numWspace > 0)
 			{
 				line = DelFunc(line, obj-numWspace-1, obj-2);
-			}
+			}*/
+			line = DelFunc(line, obj-numWspace-1, obj-2);
 			break;
 		}
 		else if (numWspace > 1)
