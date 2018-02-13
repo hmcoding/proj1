@@ -1,5 +1,5 @@
 #include "MyParse.h"
-#include "utility.h"
+#include "MyFunctions.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
