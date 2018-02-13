@@ -241,8 +241,11 @@ char** getPaths(char** args)
 		
 			case 1:
 			{
-			if (itrArg == itrCmd)
+			//if (itrArg == itrCmd)
+			  switch(itrArg)
 			  {
+				  case itrCmd:
+					  {
 				
 				if (CharCheck(args[itrArg], '/') != 1)
 				{
@@ -252,6 +255,8 @@ char** getPaths(char** args)
 				{
 					args[itrArg] = PathMaker(args[itrArg]);
 				}
+						  break;
+					  }
 				
 			  }
 				break;
@@ -277,7 +282,6 @@ char** expandVar(char** args)
 
 		while (check != '\0')
 		{
-			//if (check == '$')
 			switch(check)
 			{
 				case '$':
