@@ -428,12 +428,10 @@ int CharCheck(const char* s, char c)
 	size_t obj = 0;
 	while (s[obj] != '\0')
 	{
-		//if (s[obj] == c)
-		switch(c)
+		if (s[obj] == c)
 		{
-			default:
 				return 1;
-				break;
+
 		}
 		++obj;
 	}
