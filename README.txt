@@ -65,5 +65,8 @@ MyProcesses: handles, creates, and checks the created processes to be manipulate
 
 Known Bugs:
 
+-For background processing there is supposed to be an error when typing CMD1 < & FILE but the shell tries to execute this command
+
+-When the io command is executed the ouput is different from the ouput expected in the project description
 
 Unfinished Portions:
