@@ -1,5 +1,5 @@
-all: main.o parse.o utility.o shell.o background.o pipe.o 
-	gcc -Wall -pedantic -std=c99 -g -o shell.x main.o parse.o utility.o shell.o background.o pipe.o
+all: main.o parse.o utility.o shell.o background.o  
+	gcc -Wall -pedantic -std=c99 -g -o shell.x main.o parse.o utility.o shell.o background.o 
 	
 
 main.o: main.c
@@ -19,9 +19,6 @@ shell.o: shell.c shell.h
 
 background.o: background.c background.h
 	gcc -Wall -pedantic -std=c99 -g -c background.c
-	
-pipe.o: pipe.c pipe.h
-	gcc -Wall -pedantic -std=c99 -g -c pipe.c
 
 clean:
 	rm *.o shell.x test.x
