@@ -6,6 +6,6 @@
 int main()
 {
 	
-	RunShell();
+	startMyShell();
 	return 0;
 }
