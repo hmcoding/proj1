@@ -2,14 +2,13 @@
 #include<stdio.h>
 #include<string.h>
 #include<unistd.h>
-#include<stdbool.h>
+
 
 void MemFunc(char** arr)
 {
 	size_t obj = 0; // store the maximum size of a theoretically possible object of any type (including array)
 	
-	//while (arr[obj] != NULL)
-	while (!checkNull(arr[obj])
+	while (arr[obj] != NULL)
 	{
 			free(arr[obj]); // free( ) deallocates the memory previously allocated by a call to calloc
 			++obj;
@@ -537,11 +536,4 @@ int CountStr(char** argv, const char* s)
 	return track;
 }
 
-bool checkNull(char ** tocheck)
-{
 
-	if(tocheck == NULL)
-		return true;
-	else
-		return false;
-}
