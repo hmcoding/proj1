@@ -231,11 +231,16 @@ char* PathMaker(char* s)
 		strcpy(pwdNew, pwd);
 		pwdNew = RmDir(pwdNew);
 		
-		if (strcmp(pwdNew,"")==0)
+		//if (strcmp(pwdNew,"")==0)
+		switch(strcmp(pwdNew,"")==0)
 		{
-			stringAns = CharRep(stringAns, 0, strlen(stringAns)-1, "/");
-			free(pwdNew);
-			return stringAns;
+			case 0:
+				{
+				stringAns = CharRep(stringAns, 0, strlen(stringAns)-1, "/");
+				free(pwdNew);
+				return stringAns;
+					break;
+				}
 		}
 		stringAns = CharRep(stringAns, 0, 1, pwdNew);
 		free(pwdNew);
@@ -533,7 +538,6 @@ int CountStr(char** argv, const char* s)
 	int track = 0;
 	while (argv[obj] != NULL)
 	{
-		//if (strcmp(argv[obj], s) == 0)
 		switch(strcmp(argv[obj], s))
 		{
 			case 0:
