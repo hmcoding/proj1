@@ -224,7 +224,7 @@ char** ResolvePaths(char** args)
 		else if (cmd_type == 3)
 		{
 			printf("HI\n");
-			if ((strcmp(cur_cmd, "etime") == 0) || (strcmp(cur_cmd, "limits") == 0))
+			if ((strcmp(cur_cmd, "etime") == 0) || (strcmp(cur_cmd, "io") == 0))
 			{
 				printf("HI\n");
 				if (arg_it == (cmd_it + 1))
