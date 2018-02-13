@@ -346,7 +346,106 @@ char** externPipe(char** argv, int numpipe, int back)
                 argv3 = PBackArr(argv3, argv[it]);
                 ++it;
             }
-            TwoPipe(argv1, argv2, argv3, back, cmd);
+            //TwoPipe(argv1, argv2, argv3, back, cmd);
+		
+		int status;
+	int p1_to_p2[2];
+	int p2_to_p3[2];
+	
+	pipe(p1_to_p2);
+	pipe(p2_to_p3);
+	
+	pid_t c1PID = fork();
+	
+	// in parent of fork 1
+	if (c1PID > 0)
+	{
+		pid_t c2PID = fork();
+		//still in parent
+		if (c2PID > 0)
+		{
+			pid_t c3PID = fork();
+			// still in parent
+			if (c3PID > 0)
+			{
+				close(3);
+				close(4);
+				close(5);
+				close(6);
+				
+				waitpid(c3PID, &status, 0);
+				waitpid(c2PID, &status, 0);
+				waitpid(c1PID, &status, 0);
+			}
+			// in child of fork 3
+			else if (c3PID == 0)
+			{
+				close(0);
+				dup(5);
+				close(3);
+				close(4);
+				close(5);
+				close(6);
+				
+				execvp(argv3[0], argv3);
+				
+				printf("Error executing in fork of TwoPipe: \n");
+				DisplayArgs(argv3);
+			}
+			else
+			{
+				printf("Error executing in fork in TwoPipe: \n");
+				DisplayArgs(argv3);
+			}
+		}
+		// child of fork 2
+		else if (c2PID == 0)
+		{
+			close(0);
+			dup(3);
+			close(1);
+			dup(6);
+			close(3); 
+			close(4); 
+			close(5); 
+			close(6);
+			
+			execvp(argv2[0], argv2);
+			
+			printf("Error executing in fork of TwoPipe: \n");
+			DisplayArgs(argv2);
+		}
+		else
+		{
+			printf("Error executing in fork in TwoPipe: \n");
+			DisplayArgs(argv2);
+		}
+	}
+	// in child of fork 1
+	else if (c1PID == 0)
+	{
+		close(1);
+		dup(4);
+		close(3);
+		close(4);
+		close(5);
+		close(6);
+		
+		execvp(argv1[0], argv1);
+		
+		printf("Error executing in fork of TwoPipe: \n");
+		DisplayArgs(argv1);
+	}
+	else
+	{
+		printf("Error executing in fork in TwoPipe: \n");
+		DisplayArgs(argv1);
+	}
+		
+		
+		
+		
+		
             MemFunc(argv1);
             MemFunc(argv2);
             MemFunc(argv3);
