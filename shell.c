@@ -4,11 +4,11 @@
 
 void startMyShell()
 {
-	int running = 1;
+	int started = 1;
 	char* str;
 	char** argv;
 	Init();
-	while (running)
+	while (started)
 	{
 		
 
@@ -19,7 +19,7 @@ void startMyShell()
 		
 		if ((argv[0] == NULL) || errorsPipeIO(argv) || errorsBackground(argv))
 		{
-			// do nothing if empty arguments
+			
 		}
 		else if (strcmp(argv[0], "exit") == 0)
 		{
@@ -31,7 +31,15 @@ void startMyShell()
 		}
 		else if (strcmp(argv[0], "cd") == 0)
 		{
-
+			
+			if (GetSize(argv) == 2)
+				dirChange(argv[1]);
+			else if (GetSize(argv) < 2)
+				dirChange(getenv("HOME"));
+			else
+				printf("There are too many arguments\n");
+			
+			/*
 
 			if (GetSize(argv) <= 2)
 			{
@@ -47,8 +55,7 @@ void startMyShell()
 			{
 				printf("Too many arguments...\n");
 			}
-
-
+			*/
 
 		}
 
